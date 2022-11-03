@@ -18,6 +18,11 @@ public class Spotify {
         return new ModelAndView("redirect:https://accounts.spotify.com/authorize?", model);
     }
 
+    @RequestMapping("/getmyplaylist")
+    public void getMyPlaylist(){
+        
+    }
+
 }
 
 
