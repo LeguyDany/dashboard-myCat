@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/api/spotify/login")
+@RequestMapping("/api/spotify")
 public class Spotify {
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping("/login")
     public ModelAndView redirectWithUsingRedirectPrefix(ModelMap model){
         model.addAttribute("response_type", "code");
         model.addAttribute("client_id","80db1bd3fc9845ad9a188627e68e774a");
@@ -19,3 +19,5 @@ public class Spotify {
     }
 
 }
+
+
