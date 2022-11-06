@@ -52,24 +52,24 @@ public class Spotify {
     @GetMapping("/test")
     public String test (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, InterruptedException, URISyntaxException {
 
-            String code = request.getParameter("code");
-            String state = request.getParameter("state");
+        String code = request.getParameter("code");
 
-        //String uri = "https://account.spotify.com/api/token";
-        //RestTemplate restTemplate = new RestTemplate();
         Map<Object, Object> form = new HashMap<>();
 
         String test = new StringBuffer(this.client_id+":"+client_secret).toString();
-        byte[] bytesEncoded = Base64.encodeBase64(test.getBytes());
+        //byte[] bytesEncoded = Base64.encodeBase64(test.getBytes());
+        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
 
         form.put("code", code);
-        form.put("redirect_uri", "http://localhost:8080/sayhello");
+        form.put("redirect_uri", "http://localhost:8080/api/spotify/test");
         form.put("grant_type", "authorization_code");
-
+        //form.put("client_id", "80db1bd3fc9845ad9a188627e68e774a");
+        //form.put("client_secret", "98d21d1a4b804bd68ad89bf4b17a2574");
 
         HttpRequest request2 = HttpRequest.newBuilder()
                 .POST(buildFormDataFromMap(form))
-                .header("Authorization", "Basic "+bytesEncoded)
+                .header("Authorization", "Basic "+encodedString)
+                .header("Content-type", "application/x-www-form-urlencoded")
                 .uri(URI.create("https://accounts.spotify.com/api/token"))
                 .build();
 
