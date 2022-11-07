@@ -82,10 +82,6 @@ export function Register() {
                                 <label htmlFor="password">Password</label>
                                 <input type="password" name="password" id="password" placeholder="Enter password" required/>
                             </div>
-                            <div>
-                                <label htmlFor="email">Email address</label>
-                                <input type="email" name="email" id="email" placeholder="Enter your email address" required/>
-                            </div>
                         </div>
 
                         <input type="submit" value="Sign up"/>
