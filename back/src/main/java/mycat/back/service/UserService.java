@@ -1,31 +1,31 @@
 package mycat.back.service;
+
+
 import mycat.back.model.User;
 import mycat.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import java.util.ArrayList;
+
 @Service
-public class UserService implements IUserService {
+public class UserService implements UserDetailsService {
+
   @Autowired
-  private UserRepository userRepository;
+  UserRepository userRepository;
+
   @Override
-  public User createUser(User user) {
-    return userRepository.save(user);
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User foundedUser = userRepository.findByUsername(username);
+    if (foundedUser == null) return null;
+
+    String name = foundedUser.getUsername();
+    String pwd = foundedUser.getPassword();
+
+    return new org.springframework.security.core.userdetails.User(name, pwd, new ArrayList<>());
   }
-  @Override
-  public List<User> findByUsername(String username) {
-    return userRepository.findByUsername(username);
-  }
-  @Override
-  public List<User> findAll() {
-    return userRepository.findAll();
-  }
-  @Override
-  public void delete(String id) {
-    userRepository.deleteById(id);
-  }
-  @Override
-  public User update(User user) {
-    return userRepository.save(user);
-  }
+
 }

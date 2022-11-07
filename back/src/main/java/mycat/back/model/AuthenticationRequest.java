@@ -1,21 +1,11 @@
 package mycat.back.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+public class AuthenticationRequest {
 
-@Document(collection = "user")
-public class User {
-
-  @Id
-  private String id;
   private String username;
   private String password;
 
-  public User() {
-  }
-
-  public String getId() {
-    return id;
+  public  AuthenticationRequest() {
   }
 
   public String getUsername() {
