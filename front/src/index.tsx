@@ -2,16 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './index.css';
-import {SideNav} from './navigation';
-import {Login} from './registration';
+import {ComposeDashboard} from './dashboard';
+import {Login, Register} from './registration';
 
 const ShowPage = () => {
     return(
         <Router>
             <Routes>
-                <Route path="/register" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<SideNav />} />
+                <Route path="/dashboard" element={<ComposeDashboard />} />
             </Routes>
         </Router>
     )

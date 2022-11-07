@@ -1,13 +1,13 @@
 @import "./index.css";
 
 /* ================================================ General ================================================ */
-section{
+.registration{
     display: flex;
     flex-direction: row;
 }
 
 /* ================================================ Left side ================================================ */
-section > img {
+.registration > img {
     width: 50vw;
     height: 100vh;
     object-fit: cover;
@@ -15,13 +15,13 @@ section > img {
 
 /* ================================================ Right side ================================================ */
 /* ------------------------------------ General ------------------------------------ */
-section > article {
+.registration article {
     width: 50vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-section > article > div {
+.registration article > div {
     display: flex;
     margin: auto;
     flex-direction: column;
@@ -35,7 +35,7 @@ section > article > div {
 }
 
 /* ------------------------------------ Logo ------------------------------------ */
-section > article > div > div:nth-child(1) {
+.registration article > div > div:nth-child(1) {
     background-color: var(--purple1);
     width: calc(100% - 40px);
     display: flex;
@@ -45,31 +45,31 @@ section > article > div > div:nth-child(1) {
 }
 
 /* ------------------------------------ Form ------------------------------------ */
-form {
+.registration form {
     display: flex;
     flex-direction: column;
     gap: 30px;
     width: 70%;
 }
-form legend {
+.registration form legend {
     font-size: 2em;
     font-weight:600;
 }
-form label {
+.registration form label {
     font-size: 1.1em;
     font-weight: 500;
 }
-form > div {
+.registration form > div {
     display: flex;
     flex-direction: column;
     gap:20px;
 }
-form > div > div{
+.registration form > div > div{
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
-input {
+.registration input {
     background-color: white;
     padding: 5px 20px 5px 0px;
     border:none;
@@ -77,16 +77,16 @@ input {
     font-size: 1.2em;
     transition: .2s
 }
-::placeholder{
+.registration ::placeholder{
     color: var(--gray0);
     font-weight: 100;
 }
-form input[type= password]:focus, form input[type=text]:focus{
+.registration form input[type= password]:focus, .registration form input[type=text]:focus , .registration form input[type=email]:focus{
     outline:none;
     border-bottom: 3px solid var(--purple4);
     transition: .2s
 }
-input[type=submit]{
+.registration input[type=submit]{
     width: fit-content;
     background-color: white;
     border: solid 2px var(--purple4);
@@ -95,25 +95,25 @@ input[type=submit]{
     color: var(--purple3);
     transition: .4s;
 }
-input[type=submit]:hover{
+.registration input[type=submit]:hover{
     background-color: var(--purple4);
     color: white;
     transition: .4s;
 }
 
 /* ------------------------------------ Log in with ------------------------------------ */
-p{
+.registration p{
     margin:0px;
     font-size: 1.3em;
     color: var(--gray0);
 }
-.loginWith{
+.registration .loginWith{
     width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.oauth2{
+.registration .oauth2{
     width: 80%;
     padding: 15px 30px 15px 30px;
     color: white;
@@ -126,17 +126,29 @@ p{
     gap: 20px;
     margin-bottom: 20px;
 }
-.github {
+.registration .github {
     background-color: #3a3a3a;
 }
-.github img {
+.registration .github img {
     width: 40px;
     filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(138deg) brightness(114%) contrast(117%);
 }
-.twitter{
+.registration .twitter{
     background-color: #1C9BEF;
 }
-.twitter img{
+.registration .twitter img{
     width: 40px;
     filter: brightness(900%);
+}
+
+/* ------------------------------------ Registration page ------------------------------------ */
+.registration form > a {
+    text-decoration: none;
+    width: fit-content;
+    color:var(--purple4);
+    transition: .4s;
+}
+.registration form > a:hover {
+    color: var(--purple3);
+    transition: .4s;
 }

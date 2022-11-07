@@ -25,7 +25,15 @@ code {
     monospace;
 }
 
+h1{
+  font-size: 2em;
+}
+
 #root {
   display: flex;
   flex-direction: row;
+}
+
+.shadow0 {
+  box-shadow: 0px 0px 10px 20px rgba(0, 0, 0, .01);
 }

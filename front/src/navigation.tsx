@@ -3,18 +3,22 @@ import { useParams, useNavigate } from "react-router-dom";
 import './navigation.css';
 
 // ================ svg files ================
-import logoWhite from './assets/other/LogoWhite.svg'
-import iconDashBoard from "./assets/icons/dashboard-fill.svg"
-import iconMyServices from "./assets/icons/list-ordered.svg"
-import iconSettings from "./assets/icons/settings-4-fill.svg"
-import iconLogout from "./assets/icons/logout-box-fill.svg"
+// ---------------- navigation ----------------
+import logoWhite from './assets/other/LogoWhite.svg';
+import iconDashBoard from "./assets/icons/dashboard-fill.svg";
+import iconMyServices from "./assets/icons/list-ordered.svg";
+import iconSettings from "./assets/icons/settings-4-fill.svg";
+import iconLogout from "./assets/icons/logout-box-fill.svg";
 
+// ---------------- header ----------------
+import iconNotification from './assets/icons/notification-line.svg';
+import iconEdit from './assets/icons/edit-2-line.svg';
 
 interface NavLinksProps{
     title: string,
     img: string,
     navLink:string
-}
+};
 const NavLinks: FC<NavLinksProps> = (props):JSX.Element => {
     /* Displays an icon with a label on the navigation bar. */
     return(
@@ -23,11 +27,12 @@ const NavLinks: FC<NavLinksProps> = (props):JSX.Element => {
             {props.title}
         </a>
     )
-}
+};
 export function SideNav(){
     /* Builds a navigation bar on the left side of the screen. */
 
     return(
+        <>
         <section className={"NavBar"}>
             <img src={logoWhite} alt="Logo"/>
             <hr/>
@@ -38,40 +43,45 @@ export function SideNav(){
                 <NavLinks title={"Logout"} img={iconLogout} navLink={"/"}/>
             </div>
         </section>
+        </>
     )
-}
+};
 
 
 interface HeaderIconsProps{
-    data:{
-        icon:string;
-        link:string
-    }
-}
-function HeaderIcons({data}:HeaderIconsProps){
+    icon:string;
+    link:string
+};
+const HeaderIcons: FC<HeaderIconsProps> = (props):JSX.Element => {
     return(
-        <a href={data.link}>
-            <img src={data.icon}/>
+        <a href={props.link}>
+            <img src={props.icon}/>
         </a>
     )
+};
+interface HeaderPropsPage{
+    page:string;
 }
-export function Header(){
+export function Header({page}:HeaderPropsPage){
     /* Displays the header on right side of the screen. */
-    const [title, setTitle] = useState();
-    const [date, setDate] = useState();
-    const iconNotificationProps = {icon:"./assets/icons/.svg", link:"/"};
-    const iconEditProps = {icon:"./assets/icons/.svg", link:"/"};
+    const [title, setTitle] = useState("");
+    const [date, setDate] = useState("");
 
+
+    useEffect(()=> {
+        const today = new Date().toISOString().slice(0, 10);
+        setDate(today);
+        setTitle(page);
+    })
 
     return(
         <header>
-            <p>{title}</p>
+            <h1>{title}</h1>
 
             <div>
-                <HeaderIcons data={iconNotificationProps}/>
-                <HeaderIcons data={iconEditProps}/>
+                <HeaderIcons icon={iconNotification} link="/"/>
                 <p>{date}</p>
             </div>
         </header>
     )
-}
+};
