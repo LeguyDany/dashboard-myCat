@@ -1,5 +1,6 @@
 package mycat.back.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import org.apache.tomcat.jni.Buffer;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -37,6 +38,10 @@ public class Spotify {
             .build();
     public String client_id = "80db1bd3fc9845ad9a188627e68e774a";
     public String client_secret = "98d21d1a4b804bd68ad89bf4b17a2574";
+    public String acces_token;
+    public String refresh_token;
+    public String userId;
+    Object correctAccesToken;
 
 
     @RequestMapping("/login")
@@ -46,6 +51,7 @@ public class Spotify {
         model.addAttribute("scope","user-read-private user-read-email");
         model.addAttribute("redirect_uri", "http://localhost:8080/api/spotify/test");
         model.addAttribute("state", "azertyuiopqsdfgh");
+        model.addAttribute("authorization-grant-type", "authorization_code");
         return new ModelAndView("redirect:https://accounts.spotify.com/authorize?", model);
     }
 
@@ -57,14 +63,11 @@ public class Spotify {
         Map<Object, Object> form = new HashMap<>();
 
         String test = new StringBuffer(this.client_id+":"+client_secret).toString();
-        //byte[] bytesEncoded = Base64.encodeBase64(test.getBytes());
         String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
 
         form.put("code", code);
         form.put("redirect_uri", "http://localhost:8080/api/spotify/test");
         form.put("grant_type", "authorization_code");
-        //form.put("client_id", "80db1bd3fc9845ad9a188627e68e774a");
-        //form.put("client_secret", "98d21d1a4b804bd68ad89bf4b17a2574");
 
         HttpRequest request2 = HttpRequest.newBuilder()
                 .POST(buildFormDataFromMap(form))
@@ -79,9 +82,10 @@ public class Spotify {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
-        System.out.println(response2.statusCode());
-        System.out.println(jsonNode.toString());
-        return "test";
+
+        this.acces_token = jsonNode.get("access_token").toString();
+        this.refresh_token = jsonNode.get("refresh_token").toString();
+        return jsonNode.toString();
     }
 
     private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
@@ -94,13 +98,75 @@ public class Spotify {
             builder.append("=");
             builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
         }
-        System.out.println(builder.toString());
         return HttpRequest.BodyPublishers.ofString(builder.toString());
     }
 
-    @RequestMapping("/getmyplaylist")
-    public void getMyPlaylist(){
-        String uri = "https://api.spotify.com/v1/artist/";
+
+//    @GetMapping ("/getnewtoken")
+//    public String getNewToken() throws IOException, InterruptedException {
+//        Map<Object, Object> form = new HashMap<>();
+//
+//        String test = new StringBuffer(this.client_id+":"+client_secret).toString();
+//        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
+//
+//        System.out.println(encodedString);
+//
+//        form.put("grant_type", "refresh_token" );
+//        String str = this.refresh_token.substring(0, this.refresh_token.lastIndexOf("\""));
+//        form.put("refresh_token", str);
+//        form.put("client_id", this.client_id);
+//
+//        System.out.println(buildFormDataFromMap(form).toString());
+//        HttpRequest reqNewToken = HttpRequest.newBuilder()
+//                .POST(buildFormDataFromMap(form))
+//                .header("Authorization", "Basic "+encodedString)
+//                .header("Content-Type", "application/x-www-form-urlencoded")
+//                .uri(URI.create("https://accounts.spotify.com/api/token"))
+//                .build();
+//
+//
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpResponse<String> response2 = httpClient.send(reqNewToken, HttpResponse.BodyHandlers.ofString());
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
+//        return jsonNode.toString();
+//    }
+    @GetMapping("/me")
+    public String getMe() throws IOException, InterruptedException {
+        String str = (this.acces_token.substring(1, this.acces_token.lastIndexOf("\"")));
+        this.correctAccesToken = str;
+
+        HttpRequest req = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("https://api.spotify.com/v1/me"))
+                .header("Content-Type", "application/json")
+                .header("Authorization","Bearer "+str)
+                .build();
+
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
+        this.userId = jsonNode.get("id").toString();
+        return jsonNode.toString();
+    }
+    @GetMapping("/myplaylist")
+    public String getMyPlaylist() throws IOException, InterruptedException {
+        HttpRequest req = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("https://api.spotify.com/v1/me/playlists"))
+                .header("Content-Type", "application/json")
+                .header("Authorization","Bearer "+this.correctAccesToken)
+                .build();
+
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
+        return jsonNode.toString();
     }
 
 }
