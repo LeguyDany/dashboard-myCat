@@ -48,18 +48,18 @@ public class Spotify {
     public List<Object> songs = new ArrayList<>();
     public List<String> id = new ArrayList<>();
 
-    @RequestMapping("/login")
-    public ModelAndView redirectWithUsingRedirectPrefix(ModelMap model){
-        model.addAttribute("response_type", "code");
-        model.addAttribute("client_id","80db1bd3fc9845ad9a188627e68e774a");
-        model.addAttribute("scope","user-read-private user-read-email");
-        model.addAttribute("redirect_uri", "http://localhost:8080/api/spotify/test");
-        model.addAttribute("state", "azertyuiopqsdfgh");
-        model.addAttribute("authorization-grant-type", "authorization_code");
-        return new ModelAndView("redirect:https://accounts.spotify.com/authorize?", model);
-    }
+//    @RequestMapping("/login")
+//    public ModelAndView redirectWithUsingRedirectPrefix(ModelMap model){
+//        model.addAttribute("response_type", "code");
+//        model.addAttribute("client_id","80db1bd3fc9845ad9a188627e68e774a");
+//        model.addAttribute("scope","user-read-private user-read-email");
+//        model.addAttribute("redirect_uri", "http://localhost:8080/api/spotify/test");
+//        model.addAttribute("state", "azertyuiopqsdfgh");
+//        model.addAttribute("authorization-grant-type", "authorization_code");
+//        return new ModelAndView("redirect:https://accounts.spotify.com/authorize?", model);
+//    }
 
-    @GetMapping("/test")
+    @GetMapping("/login")
     public String test (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, InterruptedException, URISyntaxException {
 
         String code = request.getParameter("code");
@@ -217,7 +217,6 @@ public class Spotify {
 
         return jsonNode.toString();
     }
-
 }
 
 
