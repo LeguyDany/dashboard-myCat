@@ -1,3 +1,4 @@
+// ============================================= General imports =============================================
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
@@ -5,6 +6,8 @@ import './index.css';
 import {ComposeDashboard} from './dashboard';
 import {Login, Register} from './registration';
 
+// ============================================= Components =============================================
+// ---------------------------------- Routes ----------------------------------
 const ShowPage = () => {
     return(
         <Router>
@@ -17,6 +20,7 @@ const ShowPage = () => {
     )
 };
 
+// ---------------------------------- Rendering ----------------------------------
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
