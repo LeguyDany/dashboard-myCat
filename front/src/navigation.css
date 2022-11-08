@@ -1,0 +1,63 @@
+@import "index.css";
+
+/* ======================================= NavBar ======================================= */
+.NavBar {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    background-color: var(--purple0);
+    color: white;
+    height: 100vh;
+    align-items: center;
+    gap: 20px;
+    position: fixed;
+}
+.NavBar > img {
+
+    margin-top: 40px;
+    width: 150px;
+}
+.NavBar > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.NavBar hr {
+    width: 80%;
+}
+.NavBar a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    width: 120%;
+}
+
+/* ======================================= Header ======================================= */
+header{
+    width: calc(80vw - 50*2px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 50px;
+    background-color:white;
+    box-shadow: 0px 0px 10px 20px rgba(0, 0, 0, .01);
+    z-index: 10;
+    margin: 0px;
+}
+header img{
+    filter: invert(22%) sepia(100%) saturate(2197%) hue-rotate(235deg) brightness(95%) contrast(96%);
+}
+header > h1 {
+    color: var(--purple1);
+}
+header > div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}

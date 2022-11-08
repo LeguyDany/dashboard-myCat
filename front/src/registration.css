@@ -1,0 +1,154 @@
+@import "./index.css";
+
+/* ================================================ General ================================================ */
+.registration{
+    display: flex;
+    flex-direction: row;
+}
+
+/* ================================================ Left side ================================================ */
+.registration > img {
+    width: 50vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+/* ================================================ Right side ================================================ */
+/* ------------------------------------ General ------------------------------------ */
+.registration article {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.registration article > div {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 35vw;
+    height: fit-content;
+    background-color: white;
+    box-shadow: 0px 0px 10px 20px rgba(0, 0, 0, .02);
+    padding-bottom: 30px;
+}
+
+/* ------------------------------------ Logo ------------------------------------ */
+.registration article > div > div:nth-child(1) {
+    background-color: var(--purple1);
+    width: calc(100% - 40px);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ------------------------------------ Form ------------------------------------ */
+.registration form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 70%;
+}
+.registration form legend {
+    font-size: 2em;
+    font-weight:600;
+}
+.registration form label {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+.registration form > div {
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+.registration form > div > div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.registration input {
+    background-color: white;
+    padding: 5px 20px 5px 0px;
+    border:none;
+    border-bottom: solid 1.5px var(--gray0);
+    font-size: 1.2em;
+    transition: .2s
+}
+.registration ::placeholder{
+    color: var(--gray0);
+    font-weight: 100;
+}
+.registration form input[type= password]:focus, .registration form input[type=text]:focus , .registration form input[type=email]:focus{
+    outline:none;
+    border-bottom: 3px solid var(--purple4);
+    transition: .2s
+}
+.registration input[type=submit]{
+    width: fit-content;
+    background-color: white;
+    border: solid 2px var(--purple4);
+    font-size: 1.2em;
+    padding: 10px 30px 10px 30px;
+    color: var(--purple3);
+    transition: .4s;
+}
+.registration input[type=submit]:hover{
+    background-color: var(--purple4);
+    color: white;
+    transition: .4s;
+}
+
+/* ------------------------------------ Log in with ------------------------------------ */
+.registration p{
+    margin:0px;
+    font-size: 1.3em;
+    color: var(--gray0);
+}
+.registration .loginWith{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.registration .oauth2{
+    width: 80%;
+    padding: 15px 30px 15px 30px;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.registration .github {
+    background-color: #3a3a3a;
+}
+.registration .github img {
+    width: 40px;
+    filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(138deg) brightness(114%) contrast(117%);
+}
+.registration .twitter{
+    background-color: #1C9BEF;
+}
+.registration .twitter img{
+    width: 40px;
+    filter: brightness(900%);
+}
+
+/* ------------------------------------ Registration page ------------------------------------ */
+.registration form > a {
+    text-decoration: none;
+    width: fit-content;
+    color:var(--purple4);
+    transition: .4s;
+}
+.registration form > a:hover {
+    color: var(--purple3);
+    transition: .4s;
+}
