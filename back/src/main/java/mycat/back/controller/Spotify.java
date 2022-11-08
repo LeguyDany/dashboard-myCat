@@ -190,7 +190,7 @@ public class Spotify {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
 
-        String str = jsonNode.get("tracks").get("items").get(0).get("added_by").get("id").toString();
+        String str = jsonNode.get("tracks").get("items").get(0).get("track").get("id").toString();
         this.id.add(str.substring(1, str.lastIndexOf("\"")));
 
         System.out.println(this.id);
@@ -200,12 +200,12 @@ public class Spotify {
 
     @GetMapping("/getonesong")
     public String getOneSong() throws IOException, InterruptedException {
-
+        System.out.println(id.get(0));
         HttpRequest req = HttpRequest.newBuilder()
                 .GET()
                 .header("Content-Type", "application/json")
                 .header("Authorization","Bearer "+this.correctAccesToken)
-                .uri(URI.create("https://api.spotify.com/v1/tracks/"+id.get(0)+"\n"))
+                .uri(URI.create("https://api.spotify.com/v1/tracks/"+id.get(0)))
                 .build();
         HttpClient httpClient = HttpClient.newBuilder().build();
         HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
