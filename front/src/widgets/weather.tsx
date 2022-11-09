@@ -2,10 +2,11 @@
 // ============================================= Imports =============================================
 // ------------------------------------- General -------------------------------------
 import React, { FunctionComponent as FC, useEffect, useState } from 'react';
+import axios from 'axios';
 import './weather.css';
-import iconCloudy from './assets/icons/cloudy.svg';
-import iconRainy from './assets/icons/rainy.svg';
-import iconSunny from './assets/icons/sunny.svg';
+import iconCloudy from '../assets/icons/cloudy.svg';
+import iconRainy from '../assets/icons/rainy.svg';
+import iconSunny from '../assets/icons/sunny.svg';
 
 // ============================================= Components =============================================
 // ------------------------------------- Interfaces -------------------------------------
@@ -49,6 +50,14 @@ export function WeatherWidget () {
         return sum / list.length;
     }
 
+
+    const checkAPI = async ({e}:any) => {
+        // e.preventDefault();
+
+        const res = await axios.get("http://localhost:8080/api/weather/post");
+        console.log(res.data);
+    }
+
     useEffect(() => {
         const data = async () => {
 
@@ -59,6 +68,7 @@ export function WeatherWidget () {
     return(
         <section className="weatherWidget">
             <h1>Weather - Hourly conditions</h1>
+            <input type="submit" onClick={(e) => checkAPI(e)}/>
             <hr/>
             <input type="text" className="weatherLocation"/>
             <h2>{averageTemp}</h2>
