@@ -6,18 +6,11 @@ import {SideNav, Header} from './navigation';
 import './dashboard.css';
 
 // ------------------------------------- Widgets -------------------------------------
-// import {} from './widgets/weather';
+import {WeatherWidget} from './widgets/weather';
 
 
 
 // ============================================= Components =============================================
-// ------------------------------------- Test -------------------------------------
-const Clock = () => {
-    return(
-        <input type="button" value="Bonjour"/>
-    )
-}
-
 // ------------------------------------- Widget building -------------------------------------
 interface widgetType {
     widgetType:string,
@@ -42,12 +35,7 @@ export function ComposeDashboard(){
             <section className="content">
                 <Header page={page}/>
                 <article>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget2" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
+                    <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
                 </article>
             </section>
         </>
