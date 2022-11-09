@@ -26,8 +26,8 @@ export function SpotifyLogin (){
     }, [params, fetchData])
 
     return (
-     <>
-        <input type="button" value="connect with spotify" onClick={navigateTo}/>
-     </>
+        <>
+            <input type="button" value="connect with spotify" onClick={navigateTo}/>
+        </>
     )
 }

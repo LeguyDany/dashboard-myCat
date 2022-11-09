@@ -10,10 +10,7 @@ import com.twitter.clientlib.model.CreateTweetRequest;
 import com.twitter.clientlib.model.CreateTweetRequestPoll;
 import com.twitter.clientlib.model.SingleTweetLookupResponse;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -31,10 +28,9 @@ import java.util.Set;
 @RequestMapping("/api/weather/")
 public class Weather {
 
-    @GetMapping('/post')
-    @PostMapping()
-    public {
-
+    @PostMapping("/post")
+    public String getWeather(){
+        return "Bonjour";
     }
 
 
