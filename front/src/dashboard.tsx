@@ -4,7 +4,9 @@ import React, { FunctionComponent as FC, useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import {SideNav, Header} from './navigation';
 import './dashboard.css';
-
+import './widgets/spotify'
+// import {SpotifyWidget} from "./widgets/spotify";
+import axios from "axios";
 // ------------------------------------- Widgets -------------------------------------
 import {WeatherWidget} from './widgets/weather';
 
@@ -24,10 +26,10 @@ const WidgetTest = ({widgetType, Widget}:widgetType) => {
     )
 }
 
-
 // ------------------------------------- Composition -------------------------------------
 export function ComposeDashboard(){
     const [page, setPage] = useState("Dashboard");
+
 
     return(
         <>
