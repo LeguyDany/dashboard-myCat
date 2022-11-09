@@ -7,10 +7,13 @@ import './dashboard.css';
 import './widgets/spotify'
 // import {SpotifyWidget} from "./widgets/spotify";
 import axios from "axios";
+import {SpotifyWidget} from "./widgets/spotify";
+
+
 // ------------------------------------- Widgets -------------------------------------
 import {WeatherWidget} from './widgets/weather';
 
-
+// const SpotifyWebApi = require('spotify-web-api-node');
 
 // ============================================= Components =============================================
 // ------------------------------------- Widget building -------------------------------------
@@ -29,8 +32,7 @@ const WidgetTest = ({widgetType, Widget}:widgetType) => {
 // ------------------------------------- Composition -------------------------------------
 export function ComposeDashboard(){
     const [page, setPage] = useState("Dashboard");
-
-
+    const track = [];
     return(
         <>
             <SideNav />
