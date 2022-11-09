@@ -7,13 +7,13 @@ import './dashboard.css';
 import './widgets/spotify'
 // import {SpotifyWidget} from "./widgets/spotify";
 import axios from "axios";
-import {SpotifyWidget} from "./widgets/spotify";
 
 
 // ------------------------------------- Widgets -------------------------------------
 import {WeatherWidget} from './widgets/weather';
+import {SpotifyWidget} from "./widgets/spotify";
+const SpotifyWebApi = require('spotify-web-api-node');
 
-// const SpotifyWebApi = require('spotify-web-api-node');
 
 // ============================================= Components =============================================
 // ------------------------------------- Widget building -------------------------------------
