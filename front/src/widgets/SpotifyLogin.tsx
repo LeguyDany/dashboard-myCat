@@ -16,8 +16,8 @@ export function SpotifyLogin (){
         // @ts-ignore
         setCode(params.get("code"));
         async function fetchData(){
-            if(code !== "" && code !== undefined){
-                let res = await axios.post("http://localhost:8080/api/spotify/login",{"code": code}, {headers : {Cookie: "JSESSIONID=EB155CFF812BC27E88F5718D49BD51F4"}})
+            if(code !== "" && code !== null){
+                let res = await axios.post("http://localhost:8080/api/spotify/login", code)
                 console.log(res.data)
             }
         }

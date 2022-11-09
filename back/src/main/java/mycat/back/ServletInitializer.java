@@ -14,11 +14,5 @@ public class ServletInitializer extends SpringBootServletInitializer {
         return application.sources(BackApplication.class);
     }
 
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
-        servletContext.getServletRegistration(DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
-                .setInitParameter("dispatchOptionsRequest", "true");
-    }
 
 }
