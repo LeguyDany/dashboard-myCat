@@ -11,12 +11,17 @@ export function SpotifyLogin (){
     let params =  new URLSearchParams(document.location.search);
     const AUTH_URL = "http://accounts.spotify.com/authorize?client_id=80db1bd3fc9845ad9a188627e68e774a&response_type=code&redirect_uri=http://localhost:3000/services&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";
 
+
     useEffect(()=>{
         // @ts-ignore
         setCode(params.get("code"));
-        if(code != "" && code != undefined){
-            axios.post("http://localhost:8080/api/spotify/login",{"code": code})
+        async function fetchData(){
+            if(code !== "" && code !== undefined){
+                let res = await axios.post("http://localhost:8080/api/spotify/login",{"code": code}, {headers : {Cookie: "JSESSIONID=EB155CFF812BC27E88F5718D49BD51F4"}})
+                console.log(res.data)
+            }
         }
+        fetchData();
     })
 
     return (

@@ -1,5 +1,6 @@
 package mycat.back.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import org.apache.tomcat.jni.Buffer;
@@ -34,10 +35,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/spotify")
-public class Spotify {
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_2)
-            .build();
+@CrossOrigin
+    public class Spotify {
     public String client_id = "80db1bd3fc9845ad9a188627e68e774a";
     public String client_secret = "98d21d1a4b804bd68ad89bf4b17a2574";
     public String acces_token;
@@ -48,48 +47,39 @@ public class Spotify {
     public List<Object> songs = new ArrayList<>();
     public List<String> id = new ArrayList<>();
 
-//    @RequestMapping("/login")
-//    public ModelAndView redirectWithUsingRedirectPrefix(ModelMap model){
-//        model.addAttribute("response_type", "code");
-//        model.addAttribute("client_id","80db1bd3fc9845ad9a188627e68e774a");
-//        model.addAttribute("scope","user-read-private user-read-email");
-//        model.addAttribute("redirect_uri", "http://localhost:8080/api/spotify/test");
-//        model.addAttribute("state", "azertyuiopqsdfgh");
-//        model.addAttribute("authorization-grant-type", "authorization_code");
-//        return new ModelAndView("redirect:https://accounts.spotify.com/authorize?", model);
-//    }
-
-    @GetMapping("/login")
-    public String test (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, InterruptedException, URISyntaxException {
-
-        String code = request.getParameter("code");
-
-        Map<Object, Object> form = new HashMap<>();
-
-        String test = new StringBuffer(this.client_id+":"+client_secret).toString();
-        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
-
-        form.put("code", code);
-        form.put("redirect_uri", "http://localhost:8080/api/spotify/test");
-        form.put("grant_type", "authorization_code");
-
-        HttpRequest request2 = HttpRequest.newBuilder()
-                .POST(buildFormDataFromMap(form))
-                .header("Authorization", "Basic "+encodedString)
-                .header("Content-type", "application/x-www-form-urlencoded")
-                .uri(URI.create("https://accounts.spotify.com/api/token"))
-                .build();
-
-
-        HttpClient httpClient = HttpClient.newBuilder().build();
-        HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
-
-        this.acces_token = jsonNode.get("access_token").toString();
-        this.refresh_token = jsonNode.get("refresh_token").toString();
-        return jsonNode.toString();
+    @RequestMapping(value="/login", method={RequestMethod.OPTIONS,RequestMethod.POST})
+//    public String test (HttpServletRequest request, HttpServletResponse response, @RequestBody Object obj) throws IOException, ServletException, InterruptedException, URISyntaxException {
+        public String test(HttpServletRequest request) {
+            System.out.println("BONJOURRRRRRRRRRRRRRRRRRRRRRRRRr");
+//        System.out.println(obj);
+//
+//        Map<Object, Object> form = new HashMap<>();
+//
+//        String test = new StringBuffer(this.client_id+":"+client_secret).toString();
+//        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
+//
+////        form.put("code", code);
+//        form.put("redirect_uri", "http://localhost:8080/api/spotify/test");
+//        form.put("grant_type", "authorization_code");
+//
+//        HttpRequest request2 = HttpRequest.newBuilder()
+//                .POST(buildFormDataFromMap(form))
+//                .header("Authorization", "Basic "+encodedString)
+//                .header("Content-type", "application/x-www-form-urlencoded")
+//                .uri(URI.create("https://accounts.spotify.com/api/token"))
+//                .build();
+//
+//
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
+//
+//        this.acces_token = jsonNode.get("access_token").toString();
+//        this.refresh_token = jsonNode.get("refresh_token").toString();
+//        return jsonNode.toString();
+        return "";
     }
 
     private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
