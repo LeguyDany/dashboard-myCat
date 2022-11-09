@@ -7,10 +7,13 @@ import './dashboard.css';
 import './widgets/spotify'
 // import {SpotifyWidget} from "./widgets/spotify";
 import axios from "axios";
+import {SpotifyWidget} from "./widgets/spotify";
+
+const SpotifyWebApi = require('spotify-web-api-node');
+
+
 // ------------------------------------- Widgets -------------------------------------
 // import {} from './widgets/weather';
-
-
 
 // ============================================= Components =============================================
 // ------------------------------------- Test -------------------------------------
@@ -19,7 +22,6 @@ const Clock = () => {
         <input type="button" value="Bonjour"/>
     )
 }
-
 // ------------------------------------- Widget building -------------------------------------
 interface widgetType {
     widgetType:string,
@@ -36,8 +38,7 @@ const WidgetTest = ({widgetType, Widget}:widgetType) => {
 // ------------------------------------- Composition -------------------------------------
 export function ComposeDashboard(){
     const [page, setPage] = useState("Dashboard");
-
-
+    const track = [];
     return(
         <>
             <SideNav />
@@ -49,8 +50,7 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget2" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    {/*<WidgetTest widgetType="widget1" Widget={SpotifyWidget()}/>*/}
+                    <WidgetTest widgetType="widget1" Widget={SpotifyWidget()}/>
                 </article>
             </section>
         </>

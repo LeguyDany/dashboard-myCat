@@ -1,32 +1,33 @@
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
 import axios from "axios";
 
 export function SpotifyLogin (){
-    const [islogged, setIslogged] = useState(false);
-    const [accesToken, setAccesToken] = useState("");
-    const [refreshToken, setRefreshToken] = useState("");
-    const [expireIn, setExpireToken] = useState("");
     const [code, setCode] = useState("");
     let params =  new URLSearchParams(document.location.search);
-    const AUTH_URL = "http://accounts.spotify.com/authorize?client_id=80db1bd3fc9845ad9a188627e68e774a&response_type=code&redirect_uri=http://localhost:3000/services&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";
 
+    async function navigateTo(){
+        window.location.replace("http://accounts.spotify.com/authorize?client_id=80db1bd3fc9845ad9a188627e68e774a&response_type=code&redirect_uri=http://localhost:3000/services&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    async function fetchData(){
+
+        if (code !== "" && code !== null){
+            let res = await axios.post("http://localhost:8080/api/spotify/login",{code})
+            localStorage.setItem("tokenSpotify", res.data.access_token)
+            // @ts-ignore
+            window.history.pushState({}, null, "/")
+        }
+    }
 
     useEffect(()=>{
         // @ts-ignore
         setCode(params.get("code"));
-        async function fetchData(){
-            if(code !== "" && code !== undefined){
-                let res = await axios.post("http://localhost:8080/api/spotify/login",{"code": code}, {headers : {Cookie: "JSESSIONID=EB155CFF812BC27E88F5718D49BD51F4"}})
-                console.log(res.data)
-            }
-        }
         fetchData();
-    })
+    }, [params, fetchData])
 
     return (
      <>
-         {<a href={AUTH_URL}>Connect with spotify</a>}
+        <input type="button" value="connect with spotify" onClick={navigateTo}/>
      </>
     )
 }

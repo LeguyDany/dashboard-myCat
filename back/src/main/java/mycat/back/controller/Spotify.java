@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.LinkedHashMap;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -47,42 +47,39 @@ import java.util.Map;
     public List<Object> songs = new ArrayList<>();
     public List<String> id = new ArrayList<>();
 
-    @RequestMapping(value="/login", method={RequestMethod.OPTIONS,RequestMethod.POST})
-//    public String test (HttpServletRequest request, HttpServletResponse response, @RequestBody Object obj) throws IOException, ServletException, InterruptedException, URISyntaxException {
-        public String test(HttpServletRequest request) {
-            System.out.println("BONJOURRRRRRRRRRRRRRRRRRRRRRRRRr");
-//        System.out.println(obj);
-//
-//        Map<Object, Object> form = new HashMap<>();
-//
-//        String test = new StringBuffer(this.client_id+":"+client_secret).toString();
-//        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
-//
-////        form.put("code", code);
-//        form.put("redirect_uri", "http://localhost:8080/api/spotify/test");
-//        form.put("grant_type", "authorization_code");
-//
-//        HttpRequest request2 = HttpRequest.newBuilder()
-//                .POST(buildFormDataFromMap(form))
-//                .header("Authorization", "Basic "+encodedString)
-//                .header("Content-type", "application/x-www-form-urlencoded")
-//                .uri(URI.create("https://accounts.spotify.com/api/token"))
-//                .build();
-//
-//
-//        HttpClient httpClient = HttpClient.newBuilder().build();
-//        HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
-//
+    @PostMapping("/login")
+    public String test (HttpServletRequest request, HttpServletResponse response, @RequestBody LinkedHashMap obj) throws IOException, ServletException, InterruptedException, URISyntaxException {
+        String code = obj.get("code").toString();
+
+        Map<Object, Object> form = new HashMap<>();
+
+        String test = new StringBuffer(this.client_id+":"+client_secret).toString();
+        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
+
+        form.put("code", code);
+        form.put("redirect_uri", "http://localhost:3000/services");
+        form.put("grant_type", "authorization_code");
+
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .POST(buildFormDataFromMap(form))
+                .header("Authorization", "Basic "+encodedString)
+                .header("Content-type", "application/x-www-form-urlencoded")
+                .uri(URI.create("https://accounts.spotify.com/api/token"))
+                .build();
+
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
+
 //        this.acces_token = jsonNode.get("access_token").toString();
 //        this.refresh_token = jsonNode.get("refresh_token").toString();
-//        return jsonNode.toString();
-        return "";
+        return jsonNode.toString();
+
     }
 
-    private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
+        private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
         var builder = new StringBuilder();
         for (Map.Entry<Object, Object> entry : data.entrySet()){
             if(builder.length()>0){
@@ -95,37 +92,6 @@ import java.util.Map;
         return HttpRequest.BodyPublishers.ofString(builder.toString());
     }
 
-
-//    @GetMapping ("/getnewtoken")
-//    public String getNewToken() throws IOException, InterruptedException {
-//        Map<Object, Object> form = new HashMap<>();
-//
-//        String test = new StringBuffer(this.client_id+":"+client_secret).toString();
-//        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
-//
-//        System.out.println(encodedString);
-//
-//        form.put("grant_type", "refresh_token" );
-//        String str = this.refresh_token.substring(0, this.refresh_token.lastIndexOf("\""));
-//        form.put("refresh_token", str);
-//        form.put("client_id", this.client_id);
-//
-//        System.out.println(buildFormDataFromMap(form).toString());
-//        HttpRequest reqNewToken = HttpRequest.newBuilder()
-//                .POST(buildFormDataFromMap(form))
-//                .header("Authorization", "Basic "+encodedString)
-//                .header("Content-Type", "application/x-www-form-urlencoded")
-//                .uri(URI.create("https://accounts.spotify.com/api/token"))
-//                .build();
-//
-//
-//        HttpClient httpClient = HttpClient.newBuilder().build();
-//        HttpResponse<String> response2 = httpClient.send(reqNewToken, HttpResponse.BodyHandlers.ofString());
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
-//        return jsonNode.toString();
-//    }
     @GetMapping("/me")
     public String getMe() throws IOException, InterruptedException {
         String str = (this.acces_token.substring(1, this.acces_token.lastIndexOf("\"")));
@@ -146,6 +112,7 @@ import java.util.Map;
         this.userId = jsonNode.get("id").toString();
         return jsonNode.toString();
     }
+
     @GetMapping("/myplaylist")
     public String getMyPlaylist() throws IOException, InterruptedException {
         HttpRequest req = HttpRequest.newBuilder()
@@ -166,6 +133,7 @@ import java.util.Map;
         System.out.println(this.playlists);
         return jsonNode.toString();
     }
+
     @GetMapping("/oneplaylist")
     public String getPlaylist() throws IOException, InterruptedException {
         HttpRequest req = HttpRequest.newBuilder()
@@ -207,6 +175,37 @@ import java.util.Map;
 
         return jsonNode.toString();
     }
+
+    //    @GetMapping ("/getnewtoken")
+//    public String getNewToken() throws IOException, InterruptedException {
+//        Map<Object, Object> form = new HashMap<>();
+//
+//        String test = new StringBuffer(this.client_id+":"+client_secret).toString();
+//        String encodedString = Base64.encodeBase64URLSafeString(test.getBytes());
+//
+//        System.out.println(encodedString);
+//
+//        form.put("grant_type", "refresh_token" );
+//        String str = this.refresh_token.substring(0, this.refresh_token.lastIndexOf("\""));
+//        form.put("refresh_token", str);
+//        form.put("client_id", this.client_id);
+//
+//        System.out.println(buildFormDataFromMap(form).toString());
+//        HttpRequest reqNewToken = HttpRequest.newBuilder()
+//                .POST(buildFormDataFromMap(form))
+//                .header("Authorization", "Basic "+encodedString)
+//                .header("Content-Type", "application/x-www-form-urlencoded")
+//                .uri(URI.create("https://accounts.spotify.com/api/token"))
+//                .build();
+//
+//
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpResponse<String> response2 = httpClient.send(reqNewToken, HttpResponse.BodyHandlers.ofString());
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
+//        return jsonNode.toString();
+//    }
 }
 
 
