@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,17 +24,17 @@ public class AuthController {
   private UserRepository userRepository;
 
   @Autowired
-  AuthenticationManager authenticationManager;
+  private AuthenticationManager authenticationManager;
 
   @Autowired
   UserService userService;
 
-@Autowired
+  @Autowired
   JwtUtils jwtUtils;
 
   @GetMapping("/dashboard")
   private String testingToken() {
-    return "Welcome to the dashboard";
+    return "Welcome to the dashboard " + SecurityContextHolder.getContext().getAuthentication().getName();
   }
 
   @PostMapping("/register")
