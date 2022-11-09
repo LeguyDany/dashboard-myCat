@@ -1,14 +1,19 @@
+// ============================================= Imports =============================================
+// ------------------------------------- General -------------------------------------
 import React, { FunctionComponent as FC, useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import {SideNav, Header} from './navigation';
 import './dashboard.css';
+import './widgets/spotify'
+// import {SpotifyWidget} from "./widgets/spotify";
+import axios from "axios";
+// ------------------------------------- Widgets -------------------------------------
+import {WeatherWidget} from './widgets/weather';
 
-const Clock = () => {
-    return(
-        <input type="button" value="Bonjour"/>
-    )
-}
 
+
+// ============================================= Components =============================================
+// ------------------------------------- Widget building -------------------------------------
 interface widgetType {
     widgetType:string,
     Widget:React.ReactNode,
@@ -21,6 +26,7 @@ const WidgetTest = ({widgetType, Widget}:widgetType) => {
     )
 }
 
+// ------------------------------------- Composition -------------------------------------
 export function ComposeDashboard(){
     const [page, setPage] = useState("Dashboard");
 
@@ -31,11 +37,7 @@ export function ComposeDashboard(){
             <section className="content">
                 <Header page={page}/>
                 <article>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget2" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
+                    <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
                 </article>
             </section>
         </>

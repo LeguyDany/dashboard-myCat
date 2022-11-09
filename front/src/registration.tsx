@@ -1,22 +1,18 @@
-// =================== React imports ===================
+// =============================================== Imports ===============================================
+// --------------------------- General ---------------------------
 import React, { FunctionComponent as FC, useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
-
-
-// =================== css imports ===================
 import "./registration.css";
 
-
-// =================== Imports of images and svg ===================
+// --------------------------- images / svg ---------------------------
 import registerImage from "./assets/other/registerImage.jpg";
 import logoWhite from './assets/other/LogoWhite.svg';
 import logoGithub from './assets/icons/githubLogo.svg';
 import logoTwitter from './assets/icons/twitterLogo.svg';
 
 
-
-// =================== Components ===================
-
+// =============================================== Components ===============================================
+// --------------------------- Login ---------------------------
 export function Login () {
     /* Displays the screen used to log onto the user's account. */
     return(
@@ -62,7 +58,9 @@ export function Login () {
     )
 }
 
+// --------------------------- Registration ---------------------------
 export function Register() {
+    /* Component used for signing up. Sends a POST request to our API, and adds a new user. */
     return(
         <section className="registration">
             <img src={registerImage} />
