@@ -2,13 +2,16 @@ package mycat.back.controller;
 
 import mycat.back.model.AuthenticationRequest;
 import mycat.back.model.AuthenticationResponse;
-import mycat.back.model.User;
+import mycat.back.model.UserModel;
 import mycat.back.repository.UserRepository;
+import mycat.back.services.UserService;
+import mycat.back.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,15 +25,26 @@ public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
 
+  @Autowired
+  UserService userService;
+
+@Autowired
+  JwtUtils jwtUtils;
+
+  @GetMapping("/dashboard")
+  private String testingToken() {
+    return "Welcome to the dashboard";
+  }
+
   @PostMapping("/register")
   private ResponseEntity<?> registerClient(@RequestBody AuthenticationRequest authenticationRequest) {
     String username = authenticationRequest.getUsername();
     String password = authenticationRequest.getPassword();
-    User user = new User();
-    user.setUsername(username);
-    user.setPassword(password);
+    UserModel userModel = new UserModel();
+    userModel.setUsername(username);
+    userModel.setPassword(password);
     try {
-      userRepository.save(user);
+      userRepository.save(userModel);
     } catch (Exception e) {
       return ResponseEntity.ok(new AuthenticationResponse("An error has occurred please try again"));
     }
@@ -38,7 +52,7 @@ public class AuthController {
     return ResponseEntity.ok(new AuthenticationResponse(username + " Successfully registered"));
   }
 
-  @PostMapping("/auth")
+  @PostMapping("/login")
   private ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authenticationRequest) {
 
     String username = authenticationRequest.getUsername();
@@ -50,8 +64,8 @@ public class AuthController {
       return ResponseEntity.ok(new AuthenticationResponse("An error has occurred please try again"));
     }
 
-    return ResponseEntity.ok(new AuthenticationResponse(username + " Successfully authenticated"));
-
-
+    UserDetails loadedUser = userService.loadUserByUsername(username);
+    String generatedToken = jwtUtils.generateToken(loadedUser);
+    return ResponseEntity.ok(new AuthenticationResponse(generatedToken));
   }
 }

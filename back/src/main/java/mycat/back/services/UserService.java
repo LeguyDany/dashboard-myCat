@@ -1,9 +1,9 @@
-package mycat.back.service;
+package mycat.back.services;
 
-
-import mycat.back.model.User;
+import mycat.back.model.UserModel;
 import mycat.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,13 +19,13 @@ public class UserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User foundedUser = userRepository.findByUsername(username);
+    UserModel foundedUser = userRepository.findByUsername(username);
     if (foundedUser == null) return null;
 
     String name = foundedUser.getUsername();
     String pwd = foundedUser.getPassword();
 
-    return new org.springframework.security.core.userdetails.User(name, pwd, new ArrayList<>());
+    return new User(name, pwd, new ArrayList<>());
   }
 
 }

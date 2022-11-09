@@ -4,14 +4,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "user")
-public class User {
+public class UserModel {
 
   @Id
   private String id;
   private String username;
   private String password;
 
-  public User() {
+  public UserModel() {
   }
 
   public String getId() {
