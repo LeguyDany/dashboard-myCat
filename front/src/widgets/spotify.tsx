@@ -1,7 +1,6 @@
-
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
-import SpotifyPlayer from "react-spotify-web-playback"
+// import SpotifyPlayer from "react-spotify-web-playback";
 
 
 export function SpotifyWidget(){
@@ -9,9 +8,9 @@ export function SpotifyWidget(){
     if(!tokenSpotify) return null
     return (
         <div>
-            <SpotifyPlayer token={tokenSpotify}
+            {/*<SpotifyPlayer token={tokenSpotify}
             showSaveIcon
-            />
+            />*/}
         </div>
     )
 }

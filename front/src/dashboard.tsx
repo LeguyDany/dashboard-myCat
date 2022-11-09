@@ -12,7 +12,7 @@ import axios from "axios";
 // ------------------------------------- Widgets -------------------------------------
 import {WeatherWidget} from './widgets/weather';
 import {SpotifyWidget} from "./widgets/spotify";
-const SpotifyWebApi = require('spotify-web-api-node');
+// const SpotifyWebApi = require('spotify-web-api-node');
 
 
 // ============================================= Components =============================================

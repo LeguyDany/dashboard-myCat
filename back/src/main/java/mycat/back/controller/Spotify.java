@@ -73,10 +73,7 @@ import java.util.Map;
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
 
-//        this.acces_token = jsonNode.get("access_token").toString();
-//        this.refresh_token = jsonNode.get("refresh_token").toString();
         return jsonNode.toString();
-
     }
 
         private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
