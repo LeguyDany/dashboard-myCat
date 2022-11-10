@@ -1,15 +1,13 @@
 // ============================================= Imports =============================================
 // ------------------------------------- General -------------------------------------
-import React, { FunctionComponent as FC, useEffect, useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 import {SideNav, Header} from './navigation';
 import './dashboard.css';
-import './widgets/spotify'
-// import {SpotifyWidget} from "./widgets/spotify";
-import axios from "axios";
-import {SpotifyWidget} from "./widgets/spotify";
+import './widgets/SpotifyPlayerWidget'
+import {SpotifyPlayerWidget} from "./widgets/SpotifyPlayerWidget";
+import {SearchBarSpotify} from "./widgets/SearchBarSpotify";
+import {SpotifyWaitingList} from "./widgets/SpotifyWaitingList";
 
-const SpotifyWebApi = require('spotify-web-api-node');
 
 
 // ------------------------------------- Widgets -------------------------------------
@@ -35,10 +33,29 @@ const WidgetTest = ({widgetType, Widget}:widgetType) => {
     )
 }
 
+
+interface Track {
+    albumUrl: string,
+    artist: string,
+    title :string,
+    uri : string
+}
+
 // ------------------------------------- Composition -------------------------------------
 export function ComposeDashboard(){
     const [page, setPage] = useState("Dashboard");
-    const track = [];
+    const [playingTrack, setPlayingTrack] = useState<string>("")
+    const [waitingList, setWaitingList] = useState<Array<Track>>([]);
+
+    const playNow = (track : Track) => {
+        setPlayingTrack(track.uri)
+    }
+    const addToWaitingList =(track : Track) => {
+        let myArray: Array<Track> = waitingList
+        if(myArray.includes(track)) return
+        setWaitingList([...waitingList, track])
+    }
+
     return(
         <>
             <SideNav />
@@ -50,7 +67,9 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget2" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={SpotifyWidget()}/>
+                    <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
+                    <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack)}/>
+                    <WidgetTest widgetType="widget1" Widget={<SpotifyWaitingList waitingList={waitingList}/>}/>
                 </article>
             </section>
         </>
