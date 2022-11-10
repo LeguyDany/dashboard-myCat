@@ -1,13 +1,14 @@
 // ============================================= Imports =============================================
 // ------------------------------------- General -------------------------------------
-import React, { useState } from 'react';
-import {SideNav, Header} from './navigation';
+import React, {useState} from 'react';
+import {Header, SideNav} from './navigation';
 import './dashboard.css';
+
 import './widgets/SpotifyPlayerWidget'
 import {SpotifyPlayerWidget} from "./widgets/SpotifyPlayerWidget";
 import {SearchBarSpotify} from "./widgets/SearchBarSpotify";
 import {SpotifyWaitingList} from "./widgets/SpotifyWaitingList";
-
+import {WeatherWidget} from "./widgets/weather";
 
 
 // ------------------------------------- Widgets -------------------------------------
@@ -20,6 +21,17 @@ const Clock = () => {
         <input type="button" value="Bonjour"/>
     )
 }
+
+// import {SpotifyWidget} from "./widgets/spotify";
+
+
+
+// ------------------------------------- Widgets -------------------------------------
+// const SpotifyWebApi = require('spotify-web-api-node');
+
+
+// ============================================= Components =============================================
+
 // ------------------------------------- Widget building -------------------------------------
 interface widgetType {
     widgetType:string,
@@ -44,6 +56,7 @@ interface Track {
 // ------------------------------------- Composition -------------------------------------
 export function ComposeDashboard(){
     const [page, setPage] = useState("Dashboard");
+
     const [playingTrack, setPlayingTrack] = useState<string>("")
     const [waitingList, setWaitingList] = useState<Array<Track>>([]);
 
@@ -51,8 +64,7 @@ export function ComposeDashboard(){
         setPlayingTrack(track.uri)
     }
     const addToWaitingList =(track : Track) => {
-        let myArray: Array<Track> = waitingList
-        if(myArray.includes(track)) return
+        if(waitingList.includes(track)) return
         setWaitingList([...waitingList, track])
     }
 
@@ -70,6 +82,8 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
                     <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack)}/>
                     <WidgetTest widgetType="widget1" Widget={<SpotifyWaitingList waitingList={waitingList}/>}/>
+
+                    <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
                 </article>
             </section>
         </>

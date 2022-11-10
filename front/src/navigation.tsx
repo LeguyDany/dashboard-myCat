@@ -80,7 +80,7 @@ export function Header({page}:HeaderPropsPage){
 
 
     useEffect(()=> {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = Date().slice(0,15);
         setDate(today);
         setTitle(page);
     }, [])

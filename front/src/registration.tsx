@@ -3,6 +3,7 @@
 import React, { FunctionComponent as FC, useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import "./registration.css";
+import axios from 'axios';
 
 // --------------------------- images / svg ---------------------------
 import registerImage from "./assets/other/registerImage.jpg";
@@ -42,7 +43,7 @@ export function Login () {
                     </form>
                     <p>or</p>
                     <div className="loginWith">
-                        <a className="github oauth2" href="/">
+                        <a className="github oauth2" href="http://localhost:8080/oauth/authorize/github" target="_blank">
                             <img src={logoGithub} alt="Github's logo"/>
                             Log in with GitHub
                         </a>

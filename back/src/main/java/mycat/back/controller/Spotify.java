@@ -39,13 +39,7 @@ import java.util.Map;
     public class Spotify {
     public String client_id = "80db1bd3fc9845ad9a188627e68e774a";
     public String client_secret = "98d21d1a4b804bd68ad89bf4b17a2574";
-    public String acces_token;
-    public String refresh_token;
-    public String userId;
-    public Object correctAccesToken;
-    public List<Object> playlists = new ArrayList<>();
-    public List<Object> songs = new ArrayList<>();
-    public List<String> id = new ArrayList<>();
+
 
     @PostMapping("/login")
     public String test (HttpServletRequest request, HttpServletResponse response, @RequestBody LinkedHashMap obj) throws IOException, ServletException, InterruptedException, URISyntaxException {
@@ -73,8 +67,6 @@ import java.util.Map;
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readValue(response2.body(), JsonNode.class);
 
-//        this.acces_token = jsonNode.get("access_token").toString();
-//        this.refresh_token = jsonNode.get("refresh_token").toString();
         return jsonNode.toString();
 
     }
@@ -92,89 +84,89 @@ import java.util.Map;
         return HttpRequest.BodyPublishers.ofString(builder.toString());
     }
 
-    @GetMapping("/me")
-    public String getMe() throws IOException, InterruptedException {
-        String str = (this.acces_token.substring(1, this.acces_token.lastIndexOf("\"")));
-        this.correctAccesToken = str;
-
-        HttpRequest req = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create("https://api.spotify.com/v1/me"))
-                .header("Content-Type", "application/json")
-                .header("Authorization","Bearer "+str)
-                .build();
-
-        HttpClient httpClient = HttpClient.newBuilder().build();
-        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
-        this.userId = jsonNode.get("id").toString();
-        return jsonNode.toString();
-    }
-
-    @GetMapping("/myplaylist")
-    public String getMyPlaylist() throws IOException, InterruptedException {
-        HttpRequest req = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create("https://api.spotify.com/v1/me/playlists"))
-                .header("Content-Type", "application/json")
-                .header("Authorization","Bearer "+this.correctAccesToken)
-                .build();
-
-        HttpClient httpClient = HttpClient.newBuilder().build();
-        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
-        for(Object obj : jsonNode){
-            this.playlists.add(obj);
-        }
-        System.out.println(this.playlists);
-        return jsonNode.toString();
-    }
-
-    @GetMapping("/oneplaylist")
-    public String getPlaylist() throws IOException, InterruptedException {
-        HttpRequest req = HttpRequest.newBuilder()
-                .GET()
-                .header("Content-Type", "application/json")
-                .header("Authorization","Bearer "+this.correctAccesToken)
-                .uri(URI.create("https://api.spotify.com/v1/playlists/33iUDVWaLxGW0LiN9R4MTD"))
-                .build();
-        HttpClient httpClient = HttpClient.newBuilder().build();
-        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
-
-        String str = jsonNode.get("tracks").get("items").get(0).get("track").get("id").toString();
-        this.id.add(str.substring(1, str.lastIndexOf("\"")));
-
-        System.out.println(this.id);
-
-        return jsonNode.toString();
-    }
-
-    @GetMapping("/getonesong")
-    public String getOneSong() throws IOException, InterruptedException {
-        System.out.println(id.get(0));
-        HttpRequest req = HttpRequest.newBuilder()
-                .GET()
-                .header("Content-Type", "application/json")
-                .header("Authorization","Bearer "+this.correctAccesToken)
-                .uri(URI.create("https://api.spotify.com/v1/tracks/"+id.get(0)))
-                .build();
-        HttpClient httpClient = HttpClient.newBuilder().build();
-        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
-
-        System.out.println(this.id);
-
-        return jsonNode.toString();
-    }
+//    @GetMapping("/me")
+//    public String getMe() throws IOException, InterruptedException {
+//        String str = (this.acces_token.substring(1, this.acces_token.lastIndexOf("\"")));
+//        this.correctAccesToken = str;
+//
+//        HttpRequest req = HttpRequest.newBuilder()
+//                .GET()
+//                .uri(URI.create("https://api.spotify.com/v1/me"))
+//                .header("Content-Type", "application/json")
+//                .header("Authorization","Bearer "+str)
+//                .build();
+//
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
+//        this.userId = jsonNode.get("id").toString();
+//        return jsonNode.toString();
+//    }
+//
+//    @GetMapping("/myplaylist")
+//    public String getMyPlaylist() throws IOException, InterruptedException {
+//        HttpRequest req = HttpRequest.newBuilder()
+//                .GET()
+//                .uri(URI.create("https://api.spotify.com/v1/me/playlists"))
+//                .header("Content-Type", "application/json")
+//                .header("Authorization","Bearer "+this.correctAccesToken)
+//                .build();
+//
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
+//        for(Object obj : jsonNode){
+//            this.playlists.add(obj);
+//        }
+//        System.out.println(this.playlists);
+//        return jsonNode.toString();
+//    }
+//
+//    @GetMapping("/oneplaylist")
+//    public String getPlaylist() throws IOException, InterruptedException {
+//        HttpRequest req = HttpRequest.newBuilder()
+//                .GET()
+//                .header("Content-Type", "application/json")
+//                .header("Authorization","Bearer "+this.correctAccesToken)
+//                .uri(URI.create("https://api.spotify.com/v1/playlists/33iUDVWaLxGW0LiN9R4MTD"))
+//                .build();
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
+//
+//        String str = jsonNode.get("tracks").get("items").get(0).get("track").get("id").toString();
+//        this.id.add(str.substring(1, str.lastIndexOf("\"")));
+//
+//        System.out.println(this.id);
+//
+//        return jsonNode.toString();
+//    }
+//
+//    @GetMapping("/getonesong")
+//    public String getOneSong() throws IOException, InterruptedException {
+//        System.out.println(id.get(0));
+//        HttpRequest req = HttpRequest.newBuilder()
+//                .GET()
+//                .header("Content-Type", "application/json")
+//                .header("Authorization","Bearer "+this.correctAccesToken)
+//                .uri(URI.create("https://api.spotify.com/v1/tracks/"+id.get(0)))
+//                .build();
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
+//
+//        System.out.println(this.id);
+//
+//        return jsonNode.toString();
+//    }
 
     //    @GetMapping ("/getnewtoken")
 //    public String getNewToken() throws IOException, InterruptedException {
