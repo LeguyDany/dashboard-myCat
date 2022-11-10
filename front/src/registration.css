@@ -69,37 +69,6 @@
     flex-direction: column;
     gap: 5px;
 }
-.registration input {
-    background-color: white;
-    padding: 5px 20px 5px 0px;
-    border:none;
-    border-bottom: solid 1.5px var(--gray0);
-    font-size: 1.2em;
-    transition: .2s
-}
-.registration ::placeholder{
-    color: var(--gray0);
-    font-weight: 100;
-}
-.registration form input[type= password]:focus, .registration form input[type=text]:focus , .registration form input[type=email]:focus{
-    outline:none;
-    border-bottom: 3px solid var(--purple4);
-    transition: .2s
-}
-.registration input[type=submit]{
-    width: fit-content;
-    background-color: white;
-    border: solid 2px var(--purple4);
-    font-size: 1.2em;
-    padding: 10px 30px 10px 30px;
-    color: var(--purple3);
-    transition: .4s;
-}
-.registration input[type=submit]:hover{
-    background-color: var(--purple4);
-    color: white;
-    transition: .4s;
-}
 
 /* ------------------------------------ Log in with ------------------------------------ */
 .registration p{
