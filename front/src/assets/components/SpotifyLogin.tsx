@@ -12,7 +12,7 @@ export function SpotifyLogin (){
     async function fetchData(){
 
         if (code !== "" && code !== null){
-            let res = await axios.post("/api/spotify/login",{code})
+            let res = await axios.post("http://localhost:8080/api/spotify/login",{code})
             localStorage.setItem("tokenSpotify", res.data.access_token)
             // @ts-ignore
             window.history.pushState({}, null, "/")
@@ -22,18 +22,12 @@ export function SpotifyLogin (){
     useEffect(()=>{
         // @ts-ignore
         setCode(params.get("code"));
-        async function fetchData(){
-            if(code !== "" && code !== null){
-                let res = await axios.post("api/spotify/login", code)
-                console.log(res.data)
-            }
-        }
         fetchData();
     }, [params, fetchData])
 
     return (
-        <>
-            <input type="button" value="connect with spotify" onClick={navigateTo}/>
-        </>
+     <>
+        <input type="button" value="connect with spotify" onClick={navigateTo}/>
+     </>
     )
 }

@@ -1,18 +1,16 @@
-
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
+// import SpotifyPlayer from "react-spotify-web-playback";
 
-interface mapType{
-    token: string;
-    cb: string;
-}
 
 export function SpotifyWidget(){
-    const [token, setToken] = useState<string>();
-
-
+    const tokenSpotify = localStorage.getItem("tokenSpotify")
+    if(!tokenSpotify) return null
     return (
         <div>
+            {/*<SpotifyPlayer token={tokenSpotify}
+            showSaveIcon
+            />*/}
         </div>
     )
 }

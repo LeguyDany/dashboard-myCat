@@ -41,7 +41,7 @@ export function SideNav(){
             <img src={logoWhite} alt="Logo"/>
             <hr/>
             <div>
-                <NavLinks title={"Dashboard"} img={iconDashBoard} navLink={"/"}/>
+                <NavLinks title={"Dashboard"} img={iconDashBoard} navLink={"/dashboard"}/>
                 <NavLinks title={"My services"} img={iconMyServices} navLink={"/services"}/>
                 <NavLinks title={"Settings"} img={iconSettings} navLink={"/"}/>
                 <NavLinks title={"Logout"} img={iconLogout} navLink={"/logout"}/>
@@ -80,7 +80,7 @@ export function Header({page}:HeaderPropsPage){
 
 
     useEffect(()=> {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = Date().slice(0,15);
         setDate(today);
         setTitle(page);
     }, [])
