@@ -47,7 +47,7 @@ public class AuthController {
     try {
       userRepository.save(userModel);
     } catch (Exception e) {
-      return ResponseEntity.ok(new AuthenticationResponse("An error has occurred please try again"));
+    return ResponseEntity.badRequest().body("An error occurred while registering the user");
     }
 
     return ResponseEntity.ok(new AuthenticationResponse(username + " Successfully registered"));
@@ -62,7 +62,7 @@ public class AuthController {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     } catch (Exception e) {
-      return ResponseEntity.ok(new AuthenticationResponse("An error has occurred please try again"));
+      return ResponseEntity.badRequest().body("An error occurred while authenticating the user");
     }
 
     UserDetails loadedUser = userService.loadUserByUsername(username);
