@@ -11,6 +11,8 @@ public class UserModel {
   private String username;
   private String password;
 
+  private String[] widgets;
+
   public UserModel() {
   }
 
@@ -32,5 +34,13 @@ public class UserModel {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String[] getWidgets() {
+    return widgets;
+  }
+
+  public void setWidgets(String[] widgets) {
+    this.widgets = widgets;
   }
 }

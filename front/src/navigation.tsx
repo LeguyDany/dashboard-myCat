@@ -27,7 +27,7 @@ const NavLinks: FC<NavLinksProps> = (props):JSX.Element => {
     /* Displays an icon with a label on the navigation bar. */
     return(
         <a href={props.navLink}>
-            <img src={props.img}/>
+            <img src={props.img} alt="Icon and label"/>
             {props.title}
         </a>
     )
@@ -61,7 +61,7 @@ const HeaderIcons: FC<HeaderIconsProps> = (props):JSX.Element => {
     /* Component child which takes as props a path to an SVG to display an icon and a link to a page. */
     return(
         <a href={props.link}>
-            <img src={props.icon}/>
+            <img src={props.icon} alt="Icon and link"/>
         </a>
     )
 };
