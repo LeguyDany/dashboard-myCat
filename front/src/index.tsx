@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './index.css';
 import {ComposeDashboard} from './dashboard';
-import {Login, Register} from './registration';
+import {Login, Register, Logout} from './registration';
 import {Services} from "./services";
 
 // ============================================= Components =============================================
@@ -15,6 +15,7 @@ const ShowPage = () => {
             <Routes>
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/logout" element={<Logout />} />
                 <Route path="/dashboard" element={<ComposeDashboard />} />
                 <Route path="/services" element={<Services />} />
             </Routes>

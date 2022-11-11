@@ -44,7 +44,7 @@ export function SideNav(){
                 <NavLinks title={"Dashboard"} img={iconDashBoard} navLink={"/"}/>
                 <NavLinks title={"My services"} img={iconMyServices} navLink={"/services"}/>
                 <NavLinks title={"Settings"} img={iconSettings} navLink={"/"}/>
-                <NavLinks title={"Logout"} img={iconLogout} navLink={"/"}/>
+                <NavLinks title={"Logout"} img={iconLogout} navLink={"/logout"}/>
             </div>
         </section>
         </>

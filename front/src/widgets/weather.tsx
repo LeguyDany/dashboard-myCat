@@ -54,7 +54,7 @@ export function WeatherWidget () {
     const checkAPI = async ({e}:any) => {
         // e.preventDefault();
 
-        const res = await axios.get("http://localhost:8080/api/weather/post");
+        const res = await axios.get("api/weather/post");
         console.log(res.data);
     }
 

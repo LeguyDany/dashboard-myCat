@@ -69,7 +69,7 @@
     flex-direction: column;
     gap: 5px;
 }
-.registration input {
+.registration input, .registration button {
     background-color: white;
     padding: 5px 20px 5px 0px;
     border:none;
@@ -86,7 +86,7 @@
     border-bottom: 3px solid var(--purple4);
     transition: .2s
 }
-.registration input[type=submit]{
+.registration button[type=button]{
     width: fit-content;
     background-color: white;
     border: solid 2px var(--purple4);
@@ -95,7 +95,7 @@
     color: var(--purple3);
     transition: .4s;
 }
-.registration input[type=submit]:hover{
+.registration button[type=button]:hover{
     background-color: var(--purple4);
     color: white;
     transition: .4s;
