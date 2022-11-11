@@ -12,7 +12,7 @@ export function SpotifyLogin (){
     async function fetchData(){
 
         if (code !== "" && code !== null){
-            let res = await axios.post("http://localhost:8080/api/spotify/login",{code})
+            let res = await axios.post("/api/spotify/login",{code})
             localStorage.setItem("tokenSpotify", res.data.access_token)
             // @ts-ignore
             window.history.pushState({}, null, "/")

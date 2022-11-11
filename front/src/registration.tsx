@@ -2,8 +2,8 @@
 // --------------------------- General ---------------------------
 import React, { FunctionComponent as FC, useEffect, useState } from "react";
 import { useParams, useNavigate, Navigate } from "react-router-dom";
+import axios from "axios";
 import "./registration.css";
-import axios from 'axios';
 
 // --------------------------- images / svg ---------------------------
 import registerImage from "./assets/other/registerImage.jpg";
@@ -25,7 +25,6 @@ export function Login() {
       }
   }, [])
 
-<<<<<<< HEAD
   /* Sends the login information to the backend. */
   function login() {
     let item = { username, password };
@@ -51,19 +50,6 @@ export function Login() {
           <div>
             <img src={logoWhite} alt="Logo" />
           </div>
-                        <a href="/register">Not account? Click here to sign in.</a>
-                    </form>
-                    <p>or</p>
-                    <div className="loginWith">
-                        <a className="github oauth2" href="http://localhost:8080/oauth/authorize/github" target="_blank">
-                            <img src={logoGithub} alt="Github's logo"/>
-                            Log in with GitHub
-                        </a>
-                        <a className="twitter oauth2" href="/">
-                            <img src={logoTwitter} alt="Twitter's logo"/>
-                            Log in with twitter
-                        </a>
-                    </div>
 
           <form>
             <legend>Login</legend>
