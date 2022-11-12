@@ -1,2 +1,81 @@
 @import '../index.css';
+/* ====================================== General ====================================== */
 
+
+/* ====================================== Twitter post ====================================== */
+textarea {
+    resize: none;
+}
+.twitterPost {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.twitterPost > div:nth-child(2){
+    display: flex;
+    flex-direciton: row;
+    align-items: center;
+    gap: 20px;
+    margin: 0px 0px 20px 0px;
+}
+.twitterPost > div:nth-child(2) > img{
+    border-radius: 100%;
+    width: 50px;
+}
+.twitterPost > div:nth-child(2) > select{
+    border: none;
+    border-bottom: 1.5px solid var(--gray0);
+    font-size: 1.2em;
+    color: var(--purple1);
+    padding: 10px;
+    width: fit-content;
+    transition: .4s;
+}
+.twitterPost > div:nth-child(2) > select:focus{
+    outline:none;
+    border-bottom: 1.5px solid var(--purple3);
+    transition: .4s;
+}
+
+.twitterPost textarea{
+    height: 200px;
+    padding: 10px;
+    font-size: 1.2em;
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    border: solid 1px var(--gray0);
+    width: calc(100% - 20px);
+}
+.twitterPost textarea:focus{
+    outline: solid 1px var(--purple3);
+}
+
+.twitterPostOptions{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.twitterPostOptions > img{
+    height: 36px;
+}
+.twitterPostOptions > img:hover{
+    filter: invert(28%) sepia(89%) saturate(5287%) hue-rotate(239deg) brightness(95%) contrast(94%);
+}
+.twitterPostOptionSelected{
+    filter: invert(42%) sepia(93%) saturate(3396%) hue-rotate(225deg) brightness(101%) contrast(101%);
+}
+.tweetImgPreview{
+    max-height: 200px;
+    max-width: 50%;
+}
+
+.twitterPost > hr{
+    width: 100%;
+}
+
+.twitterPostOptions{
+    display: flex;
+    flex-direction: row;
+    align-item: flex-end;
+}

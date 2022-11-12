@@ -133,57 +133,87 @@ public class Twitter {
     @PostMapping("/postTweet")
     public String postTweet(HttpServletRequest request, HttpServletResponse response, @RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
 
-//        String client_id = "T3ZMY1lIQkw2b2FmWmlIdmdfN1M6MTpjaQ";
-//        String secret_client = "US3Pzl0Bgni8dMXoqU-ub1yHq5sEv8zoFc9VT_W0Fzudf7vzrK";
-//        String refresh_token = obj.get("refresh_token_twitter").toString();
+        String client_id = this.client_id;
+        String secret_client = this.client_secret;
+        String refresh_token = obj.get("refresh_token_twitter").toString();
         String access_token = obj.get("access_token_twitter").toString();
 
-        Map<Object, Object> form = new HashMap<>();
-        form.put("text", "I am posting a tweet from an API!");
+        // Instantiate auth credentials (App-only example)
+        TwitterCredentialsOAuth2 credentials = new TwitterCredentialsOAuth2(client_id, secret_client, access_token, refresh_token);
 
-        HttpRequest req = HttpRequest.newBuilder()
-                .POST(buildFormDataFromMap(form))
-                .header("Authorization", "Bearer " + access_token)
-                .header("Content-Type", "application/json")
-                .uri(new URI("https://api.twitter.com/2/tweets"))
-                .build();
+        credentials.setTwitterOauth2AccessToken(access_token);
+        credentials.setTwitterOauth2RefreshToken(refresh_token);
 
-        HttpClient httpClient = HttpClient.newBuilder().build();
-        HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+        // Instantiate library client
+        TwitterApi apiInstance = new TwitterApi();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readValue(res.body(), JsonNode.class);
+        // Pass credentials to library client
+        apiInstance.setTwitterCredentials(credentials);
 
-        System.out.println(jsonNode);
 
-//        // Instantiate auth credentials (App-only example)
-//        TwitterCredentialsOAuth2 credentials = new TwitterCredentialsOAuth2(client_id, secret_client, access_token, refresh_token);
-//
-//        credentials.setTwitterOauth2AccessToken(access_token);
-//        credentials.setTwitterOauth2RefreshToken(refresh_token);
-//
-//        // Instantiate library client
-//        TwitterApi apiInstance = new TwitterApi();
-//
-//        // Pass credentials to library client
-//        apiInstance.setTwitterCredentials(credentials);
-//
-//        // Set the params values
-//        CreateTweetRequest createTweetRequest = new CreateTweetRequest();
-//        CreateTweetRequestPoll createTweetRequestPoll = new CreateTweetRequestPoll();
-//
-//        // The text of the Tweet
-//        createTweetRequest.text("Are you excited for the weekend?");
-//
-//        // Options for a Tweet with a poll
-//        List<String> pollOptions = Arrays.asList("Yes", "Maybe", "No");
-//        createTweetRequestPoll.options(pollOptions);
-//
-//        // Duration of the poll in minutes
-//        createTweetRequestPoll.durationMinutes(120);
-//
-//        createTweetRequest.poll(createTweetRequestPoll);
+        // Set the params values
+        CreateTweetRequest createTweetRequest = new CreateTweetRequest();
+        CreateTweetRequestPoll createTweetRequestPoll = new CreateTweetRequestPoll();
 
-        return jsonNode.toString();
+        // The text of the Tweet
+        createTweetRequest.text("Are you excited for the weekend?");
+
+        // Options for a Tweet with a poll
+        List<String> pollOptions = Arrays.asList("Yes", "Maybe", "No");
+        createTweetRequestPoll.options(pollOptions);
+
+        // Duration of the poll in minutes
+        createTweetRequestPoll.durationMinutes(120);
+
+        createTweetRequest.poll(createTweetRequestPoll);
+
+        try {
+            TweetCreateResponse result = apiInstance.tweets().createTweet(createTweetRequest);
+            System.out.println(result);
+            return result.toString();
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TweetsApi#createTweet");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+            return "error";
+        }
+
     }
+
+    @PostMapping("/getProfile")
+    public String getProfile(HttpServletRequest request, HttpServletResponse response, @RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
+
+        String refresh_token = obj.get("refresh_token_twitter").toString();
+        String access_token = obj.get("access_token_twitter").toString();
+
+        // Instantiate auth credentials (App-only example)
+        TwitterCredentialsOAuth2 credentials = new TwitterCredentialsOAuth2(this.client_id, this.client_secret, access_token, refresh_token);
+        credentials.setTwitterOauth2AccessToken(access_token);
+        credentials.setTwitterOauth2RefreshToken(refresh_token);
+
+        // Instantiate library client
+        TwitterApi apiInstance = new TwitterApi();
+
+        // Pass credentials to library client
+        apiInstance.setTwitterCredentials(credentials);
+
+        // Set<String> | A comma separated list of User fields to display.
+        Set<String> userFields = new HashSet<>(Arrays.asList("profile_image_url"));
+
+        try {
+            SingleUserLookupResponse result = apiInstance.users().findMyUser(null, null, userFields);
+            return result.getData().toJson();
+        } catch (ApiException e) {
+            System.err.println("Exception when calling UsersApi#findMyUser");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+            return "error:" + e;
+        }
+
+    }
+
 }

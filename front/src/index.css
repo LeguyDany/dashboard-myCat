@@ -28,6 +28,12 @@ code {
 h1{
   font-size: 2em;
   margin: 0px;
+  color: var(--purple1);
+}
+.twitterPost h2 {
+  margin: 0px 0px 10px 0px;
+  color: var(--purple1);
+  font-weight: 600;
 }
 
 #root {
@@ -71,4 +77,25 @@ input[type=submit]:hover{
   background-color: var(--purple4);
   color: white;
   transition: .4s;
+}
+
+/* ----------------------------------------------- Head of components ----------------------------------------------- */
+.compHead > div {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.compHead > img {
+  height: 40px;
+}
+
+/* ----------------------------------------------- Other ----------------------------------------------- */
+.lightSeparator {
+  border-top: solid 1px var(--gray2);
+  border-left: none;
+}
+.displayNone{
+  display: none;
 }
