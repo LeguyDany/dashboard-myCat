@@ -10,6 +10,8 @@ import axios from "axios";
 // ------------------------------------- Widgets -------------------------------------
 import {WeatherWidget} from './widgets/weather';
 
+import {PostTweet} from './widgets/twitter';
+// const SpotifyWebApi = require('spotify-web-api-node');
 
 
 // ============================================= Components =============================================
@@ -38,6 +40,7 @@ export function ComposeDashboard(){
                 <Header page={page}/>
                 <article>
                     <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
+                    <WidgetTest widgetType="widget2" Widget={<PostTweet/>}/>
                 </article>
             </section>
         </>

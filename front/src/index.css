@@ -27,6 +27,13 @@ code {
 
 h1{
   font-size: 2em;
+  margin: 0px;
+  color: var(--purple1);
+}
+.twitterPost h2 {
+  margin: 0px 0px 10px 0px;
+  color: var(--purple1);
+  font-weight: 600;
 }
 
 #root {
@@ -36,4 +43,63 @@ h1{
 
 .shadow0 {
   box-shadow: 0px 0px 10px 20px rgba(0, 0, 0, .01);
+}
+legend {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: var(--purple1)
+}
+/* ==================================================== Component ==================================================== */
+/* ----------------------------------------------- Form ----------------------------------------------- */
+input {
+  background-color: white;
+  padding: 5px 20px 5px 0px;
+  border:none;
+  border-bottom: solid 1.5px var(--gray0);
+  font-size: 1.2em;
+  transition: .2s
+}
+::placeholder{
+  color: var(--gray0);
+  font-weight: 100;
+}
+form input[type= password]:focus, form input[type=text]:focus , form input[type=email]:focus{
+  outline:none;
+  border-bottom: 3px solid var(--purple4);
+  transition: .2s
+}
+input[type=submit]{
+  width: fit-content;
+  background-color: white;
+  border: solid 2px var(--purple4);
+  font-size: 1.2em;
+  padding: 10px 30px 10px 30px;
+  color: var(--purple3);
+  transition: .4s;
+}
+input[type=submit]:hover{
+  background-color: var(--purple4);
+  color: white;
+  transition: .4s;
+}
+
+/* ----------------------------------------------- Head of components ----------------------------------------------- */
+.compHead > div {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.compHead > img {
+  height: 40px;
+}
+
+/* ----------------------------------------------- Other ----------------------------------------------- */
+.lightSeparator {
+  border-top: solid 1px var(--gray2);
+  border-left: none;
+}
+.displayNone{
+  display: none;
 }
