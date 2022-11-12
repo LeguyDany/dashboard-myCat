@@ -151,34 +151,41 @@ public class Twitter {
         apiInstance.setTwitterCredentials(credentials);
 
 
-        // Set the params values
-        CreateTweetRequest createTweetRequest = new CreateTweetRequest();
-        CreateTweetRequestPoll createTweetRequestPoll = new CreateTweetRequestPoll();
 
-        // The text of the Tweet
-        createTweetRequest.text("Are you excited for the weekend?");
 
-        // Options for a Tweet with a poll
-        List<String> pollOptions = Arrays.asList("Yes", "Maybe", "No");
-        createTweetRequestPoll.options(pollOptions);
 
-        // Duration of the poll in minutes
-        createTweetRequestPoll.durationMinutes(120);
 
-        createTweetRequest.poll(createTweetRequestPoll);
+        return "bonjour";
 
-        try {
-            TweetCreateResponse result = apiInstance.tweets().createTweet(createTweetRequest);
-            System.out.println(result);
-            return result.toString();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling TweetsApi#createTweet");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-            return "error";
-        }
+
+//        // Set the params values
+//        CreateTweetRequest createTweetRequest = new CreateTweetRequest();
+//        CreateTweetRequestPoll createTweetRequestPoll = new CreateTweetRequestPoll();
+//
+//        // The text of the Tweet
+//        createTweetRequest.text("Are you excited for the weekend?");
+//
+//        // Options for a Tweet with a poll
+//        List<String> pollOptions = Arrays.asList("Yes", "Maybe", "No");
+//        createTweetRequestPoll.options(pollOptions);
+//
+//        // Duration of the poll in minutes
+//        createTweetRequestPoll.durationMinutes(120);
+//
+//        createTweetRequest.poll(createTweetRequestPoll);
+//
+//        try {
+//            TweetCreateResponse result = apiInstance.tweets().createTweet(createTweetRequest);
+//            System.out.println(result);
+//            return result.toString();
+//        } catch (ApiException e) {
+//            System.err.println("Exception when calling TweetsApi#createTweet");
+//            System.err.println("Status code: " + e.getCode());
+//            System.err.println("Reason: " + e.getResponseBody());
+//            System.err.println("Response headers: " + e.getResponseHeaders());
+//            e.printStackTrace();
+//            return "error";
+//        }
 
     }
 
