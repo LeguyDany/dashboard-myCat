@@ -76,7 +76,7 @@ import java.util.Map;
         return jsonNode.toString();
     }
 
-        private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
+    private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
         var builder = new StringBuilder();
         for (Map.Entry<Object, Object> entry : data.entrySet()){
             if(builder.length()>0){

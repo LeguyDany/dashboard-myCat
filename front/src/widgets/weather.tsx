@@ -1,7 +1,7 @@
 
 // ============================================= Imports =============================================
 // ------------------------------------- General -------------------------------------
-import React, { FunctionComponent as FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './weather.css';
 import iconCloudy from '../assets/icons/cloudy.svg';

@@ -6,6 +6,7 @@ import './index.css';
 import {ComposeDashboard} from './dashboard';
 import {Login, Register} from './registration';
 import {Services} from "./services";
+import {TwitterLogin} from "./widgets/twitterLogin"
 
 // ============================================= Components =============================================
 // ---------------------------------- Routes ----------------------------------
@@ -17,6 +18,7 @@ const ShowPage = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<ComposeDashboard />} />
                 <Route path="/services" element={<Services />} />
+                <Route path="/twitterLogin" element={<TwitterLogin />} />
             </Routes>
         </Router>
     )
