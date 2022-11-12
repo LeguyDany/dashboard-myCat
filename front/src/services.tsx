@@ -1,7 +1,7 @@
-
+import {SpotifyWidget} from "./widgets/spotify";
 import React, {useState} from "react";
 import {Header, SideNav} from "./navigation";
-import {SpotifyLogin} from "./assets/components/SpotifyLogin";
+import {SpotifyLogin} from "./widgets/SpotifyLogin";
 
 interface widgetType {
     widgetType:string,

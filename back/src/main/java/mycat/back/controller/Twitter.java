@@ -50,6 +50,7 @@ public class Twitter {
     @GetMapping("/getTweet")
     public String getTweet() {
 
+
         // Instantiate auth credentials (App-only example)
         TwitterCredentialsBearer credentials = new TwitterCredentialsBearer("AAAAAAAAAAAAAAAAAAAAAEEfiwEAAAAA2xa2Jpd0sP04JWHUriUVClevIAM%3DwNoYySWDD1XEgRlRl6i3Dbm0I5qmvkwSdILBOXkSOdfKQNEu4s");
 

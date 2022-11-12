@@ -2,7 +2,6 @@
 // --------------------------- General ---------------------------
 import React, { FunctionComponent as FC, useEffect, useState } from "react";
 import { useParams, useNavigate, Navigate } from "react-router-dom";
-import axios from "axios";
 import "./registration.css";
 
 // --------------------------- images / svg ---------------------------

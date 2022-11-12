@@ -1,115 +1,98 @@
-
-// ============================================= Imports =============================================
-// ------------------------------------- General -------------------------------------
+// ============================================= General imports =============================================
 import React, { FunctionComponent as FC, useEffect, useState } from 'react';
-import axios from 'axios';
-import './weather.css';
-import iconCloudy from '../assets/icons/cloudy.svg';
-import iconRainy from '../assets/icons/rainy.svg';
-import iconSunny from '../assets/icons/sunny.svg';
+import { useParams, useNavigate } from "react-router-dom";
+import './navigation.css';
 
-// ============================================= Components =============================================
-// ------------------------------------- Interfaces -------------------------------------
-interface mapType{
-    hour:string;
-    temp:number;
-    cloud:number;
-    rain:number;
-}
+// ================================================ svg files ================================================
+// ---------------- navigation ----------------
+import logoWhite from './assets/other/LogoWhite.svg';
+import iconDashBoard from "./assets/icons/dashboard-fill.svg";
+import iconMyServices from "./assets/icons/list-ordered.svg";
+import iconSettings from "./assets/icons/settings-4-fill.svg";
+import iconLogout from "./assets/icons/logout-box-fill.svg";
 
-// ------------------------------------- Child -------------------------------------
-function HourlyWeather({hour, temp, cloud, rain}:mapType) {
-    /* Child component used to display the weather at a precise hour. */
+// ---------------- header ----------------
+import iconNotification from './assets/icons/notification-line.svg';
+import iconEdit from './assets/icons/edit-2-line.svg';
 
-    const checkWeather = (weather:mapType) => {
-        if(weather.rain > .5) {return iconRainy;}
-        if(weather.cloud > .5) {return iconCloudy;}
-        return iconSunny;
-    };
 
-    return(
-        <div className="hourlyWeather">
-            <p>
-                {hour.substring(5,10)} <br/>
-                {hour.substring(11)}
-            </p>
-            <img src={checkWeather({hour, temp, cloud, rain})} alt={checkWeather({hour, temp, cloud, rain})}/>
-            <p>{temp} °C</p>
-        </div>
-    );
+// ================================================ Components ================================================
+// -------------------------------- navigation --------------------------------
+interface NavLinksProps{
+    title: string,
+    img: string,
+    navLink:string
 };
-
-// ------------------------------------- Main component -------------------------------------
-export function WeatherWidget () {
-    /* Builds the widget for the weather. */
-    const [averageTemp, setAverageTemp] = useState<String>();
-    const [hourlyWeather, setHourlyWeather] = useState<mapType[]>([]);
-    const [averageWeather, setAverageWeather] = useState<String>(iconSunny);
-    const [address, setAddress] = useState<String>();
-    const [resAddress, setResAddress] = useState<String>();
-    const now = new Date().toJSON().substring(0,13);
-
-    const getAverageTemp = (list:number[]) => {
-        let sum: number = 0;
-        list.forEach(element => {
-            sum += element;
-        })
-        return Number(sum / list.length).toFixed(1) + " °";
-    }
-
-    const checkAPI = async (e: React.SyntheticEvent) => {
-        e.preventDefault();
-
-        const data={
-            address:address
-        }
-        const res = await axios.post("http://localhost:8080/api/weather/post", data);
-
-        let currentTime;
-
-        for(let i = 0; i < res.data.hour.length ; i++){
-            if(now == res.data.hour[i].substring(0,13)){
-                currentTime = i;
-                break;
-            }
-        }
-
-        let weatherConstruction:mapType[] = [];
-
-        for(let i = currentTime? currentTime : 0 ; i < 48; i++){
-            const formWeather:mapType = {
-                rain: res.data.rain[i],
-                cloud: res.data.cloud[i],
-                temp: res.data.temp[i],
-                hour: res.data.hour[i],
-            };
-            weatherConstruction.push(formWeather);
-        }
-
-        setHourlyWeather(weatherConstruction);
-        setResAddress(res.data.address);
-        setAverageTemp(getAverageTemp(res.data.temp.slice(currentTime? currentTime : 0, currentTime? currentTime + 12 : 12)));
-    }
+const NavLinks: FC<NavLinksProps> = (props):JSX.Element => {
+    /* Displays an icon with a label on the navigation bar. */
+    return(
+        <a href={props.navLink}>
+            <img src={props.img} alt="Icon and label"/>
+            {props.title}
+        </a>
+    )
+};
+export function SideNav(){
+    /* Builds a navigation bar on the left side of the screen. */
 
     return(
-        <section className="weatherWidget">
-            <h1>Weather - Hourly conditions</h1>
+        <>
+        <section className={"NavBar"}>
+            <img src={logoWhite} alt="Logo"/>
             <hr/>
-            <form onSubmit={checkAPI}>
-                <input type="text" className="weatherLocation" onChange={e => {setAddress(e.target.value)}} placeholder="Enter an address"/>
-                <input type="submit" value="Search"/>
-            </form>
-
-            <p>{resAddress}</p>
-            <h2>{averageTemp}</h2>
-
-            <div className="offsetWeather">
-                <div className="setOfHourlyWeather">
-                    {hourlyWeather.map((weather, index) => (
-                        <HourlyWeather key={index} hour={weather.hour} temp={weather.temp} cloud={weather.cloud} rain={weather.rain}/>
-                    ))}
-                </div>
+            <div>
+                <NavLinks title={"Dashboard"} img={iconDashBoard} navLink={"/"}/>
+                <NavLinks title={"My services"} img={iconMyServices} navLink={"/services"}/>
+                <NavLinks title={"Settings"} img={iconSettings} navLink={"/"}/>
+                <NavLinks title={"Logout"} img={iconLogout} navLink={"/logout"}/>
             </div>
         </section>
+        </>
+    )
+};
+
+
+// -------------------------------- header --------------------------------
+interface HeaderIconsProps{
+    icon:string;
+    link:string
+};
+const HeaderIcons: FC<HeaderIconsProps> = (props):JSX.Element => {
+    /* Component child which takes as props a path to an SVG to display an icon and a link to a page. */
+    return(
+        <a href={props.link}>
+            <img src={props.icon} alt="Icon and link"/>
+        </a>
+    )
+};
+interface HeaderPropsPage{
+    page:string;
+}
+export function Header({page}:HeaderPropsPage){
+    /* Displays the header on right side of the screen. Takes as props which page we want to display.
+    Possible choices:
+    - Dashboard
+    - Services
+    - Settings
+    */
+    const [title, setTitle] = useState("");
+    const [date, setDate] = useState("");
+
+
+    useEffect(()=> {
+        const today = new Date().toISOString().slice(0, 10);
+        setDate(today);
+        setTitle(page);
+    }, [])
+
+    return(
+        <header>
+            <h1>{title}</h1>
+
+            <div>
+                <HeaderIcons icon={iconNotification} link="/"/>
+                <p>{date}</p>
+            </div>
+        </header>
     )
 };

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,10 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
+  @Autowired
+  PasswordEncoder passwordEncoder;
+
+
   @GetMapping("/dashboard")
   private String testingToken() {
     return "Welcome to the dashboard " + SecurityContextHolder.getContext().getAuthentication().getName();
@@ -44,7 +49,11 @@ public class AuthController {
     UserModel userModel = new UserModel();
     userModel.setUsername(username);
     userModel.setPassword(password);
+    if (userRepository.findByUsername(username) != null) {
+      return ResponseEntity.badRequest().body("Username already exists");
+    }
     try {
+      userModel.setPassword(passwordEncoder.encode(password));
       userRepository.save(userModel);
     } catch (Exception e) {
     return ResponseEntity.badRequest().body("An error occurred while registering the user");

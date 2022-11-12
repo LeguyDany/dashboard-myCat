@@ -29,12 +29,9 @@ function HourlyWeather({hour, temp, cloud, rain}:mapType) {
 
     return(
         <div className="hourlyWeather">
-            <p>
-                {hour.substring(5,10)} <br/>
-                {hour.substring(11)}
-            </p>
+            <p>{hour}</p>
             <img src={checkWeather({hour, temp, cloud, rain})} alt={checkWeather({hour, temp, cloud, rain})}/>
-            <p>{temp} °C</p>
+            <p>{temp}</p>
         </div>
     );
 };
@@ -42,23 +39,17 @@ function HourlyWeather({hour, temp, cloud, rain}:mapType) {
 // ------------------------------------- Main component -------------------------------------
 export function WeatherWidget () {
     /* Builds the widget for the weather. */
-    const [averageTemp, setAverageTemp] = useState<String>();
+    const [averageTemp, setAverageTemp] = useState<number>();
     const [hourlyWeather, setHourlyWeather] = useState<mapType[]>([]);
-    const [averageWeather, setAverageWeather] = useState<String>(iconSunny);
-    const [address, setAddress] = useState<String>();
-    const [resAddress, setResAddress] = useState<String>();
-    const now = new Date().toJSON().substring(0,13);
 
-    const getAverageTemp = (list:number[]) => {
-        let sum: number = 0;
+    const getAverageTemp = (list:mapType[]) => {
+        let sum = 0;
         list.forEach(element => {
-            sum += element;
+            sum += element.temp;
         })
-        return Number(sum / list.length).toFixed(1) + " °";
+        return sum / list.length;
     }
 
-    const checkAPI = async (e: React.SyntheticEvent) => {
-        e.preventDefault();
 
     const checkAPI = async ({e}:any) => {
         // e.preventDefault();
@@ -70,56 +61,20 @@ export function WeatherWidget () {
     useEffect(() => {
         const data = async () => {
 
-        const data={
-            address:address
         }
-        const res = await axios.post("/api/weather/post", data);
-
-        let currentTime;
-
-        for(let i = 0; i < res.data.hour.length ; i++){
-            if(now == res.data.hour[i].substring(0,13)){
-                currentTime = i;
-                break;
-            }
-        }
-
-        let weatherConstruction:mapType[] = [];
-
-        for(let i = currentTime? currentTime : 0 ; i < 48; i++){
-            const formWeather:mapType = {
-                rain: res.data.rain[i],
-                cloud: res.data.cloud[i],
-                temp: res.data.temp[i],
-                hour: res.data.hour[i],
-            };
-            weatherConstruction.push(formWeather);
-        }
-
-        setHourlyWeather(weatherConstruction);
-        setResAddress(res.data.address);
-        setAverageTemp(getAverageTemp(res.data.temp.slice(currentTime? currentTime : 0, currentTime? currentTime + 12 : 12)));
-    }
+        setAverageTemp(getAverageTemp(hourlyWeather));
+    }, [])
 
     return(
         <section className="weatherWidget">
             <h1>Weather - Hourly conditions</h1>
+            <input type="submit" onClick={(e) => checkAPI(e)}/>
             <hr/>
-            <form onSubmit={checkAPI}>
-                <input type="text" className="weatherLocation" onChange={e => {setAddress(e.target.value)}} placeholder="Enter an address"/>
-                <input type="submit" value="Search"/>
-            </form>
-
-            <p>{resAddress}</p>
+            <input type="text" className="weatherLocation"/>
             <h2>{averageTemp}</h2>
-
-            <div className="offsetWeather">
-                <div className="setOfHourlyWeather">
-                    {hourlyWeather.map((weather, index) => (
-                        <HourlyWeather key={index} hour={weather.hour} temp={weather.temp} cloud={weather.cloud} rain={weather.rain}/>
-                    ))}
-                </div>
-            </div>
+            {hourlyWeather.map(weather => (
+                <HourlyWeather hour={weather.hour} temp={weather.temp} cloud={weather.cloud} rain={weather.rain}/>
+            ))}
         </section>
     )
 };
