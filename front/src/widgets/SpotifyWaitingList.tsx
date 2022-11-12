@@ -14,6 +14,7 @@ export function SpotifyWaitingList({waitingList}: { waitingList: Track[] }){
 
     return(
         <div>
+            <h3>Favorite List</h3>
             {myWaitingList.map(track =>(
                 <div key={track.uri}>
                     <img src={track.albumUrl}/>

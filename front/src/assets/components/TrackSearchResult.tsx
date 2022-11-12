@@ -9,7 +9,7 @@ export default function TrackSearchResult( { track, playNow, addToWaitingList })
             <img src={track.albumUrl}/>
             <div> {track.title}</div>
             <div> {track.artist}</div>
-            <button onClick={() => addToWaitingList(track)}>Add to waiting list</button>
+            <button onClick={() => addToWaitingList(track)}>Add to favorite list</button>
             <button onClick={() => playNow(track)}> Play now</button>
         </div>
     )

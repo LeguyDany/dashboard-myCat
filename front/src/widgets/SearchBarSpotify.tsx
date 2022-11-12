@@ -2,6 +2,7 @@
 import React, {useState, useEffect, FormEvent} from "react";
 import SpotifyWebApi from "spotify-web-api-node";
 import TrackSearchResult from "../assets/components/TrackSearchResult";
+import axios from "axios";
 
 // @ts-ignore
 export function SearchBarSpotify({playNow, addToWaitingList}){
@@ -18,6 +19,7 @@ export function SearchBarSpotify({playNow, addToWaitingList}){
         event.preventDefault()
         if(!search) return setSearchResults([]);
         // @ts-ignore
+        axios.post("http://localhost:8080/api/spotify/savesearch", {"LastSearch" : search})
         SpotifyApi.searchTracks(search).then( res => {
             // @ts-ignore
             setSearchResults(res.body.tracks.items.map(track => {

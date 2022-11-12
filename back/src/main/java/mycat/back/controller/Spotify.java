@@ -84,6 +84,17 @@ import java.util.Map;
         return HttpRequest.BodyPublishers.ofString(builder.toString());
     }
 
+    @PostMapping ("/savesearch")
+    public String saveSearch(@RequestBody LinkedHashMap lastResearch){
+        System.out.println(lastResearch.get("LastSearch").toString());
+        //Rajouter dans la value d'un champ "last research spotify" dans table user
+        return "test";
+    }
+    @GetMapping("/getlastresearch")
+    public String getLastSearch(){
+        
+    }
+
 //    @GetMapping("/me")
 //    public String getMe() throws IOException, InterruptedException {
 //        String str = (this.acces_token.substring(1, this.acces_token.lastIndexOf("\"")));
