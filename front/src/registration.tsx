@@ -37,7 +37,7 @@ export function Login() {
         })
             .then((res) => res.json())
             .then((result) => {
-                localStorage.setItem("user-info", JSON.stringify(result));
+                localStorage.setItem("user-info", result.response);
                 navigate("/dashboard");
             });
     }
@@ -89,7 +89,7 @@ export function Login() {
                             <img src={logoGithub} alt="Github's logo" />
                             Log in with GitHub
                         </a>
-                        <a className="twitter oauth2" href="/">
+                        <a className="twitter oauth2" href="https://twitter.com/i/oauth2/authorize?response_type=code&client_id=T3ZMY1lIQkw2b2FmWmlIdmdfN1M6MTpjaQ&redirect_uri=http://localhost:3000/twitterLogin&scope=tweet.read tweet.write users.read offline.access&state=state&code_challenge=challenge&code_challenge_method=plain">
                             <img src={logoTwitter} alt="Twitter's logo" />
                             Log in with twitter
                         </a>
