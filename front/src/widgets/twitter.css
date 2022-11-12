@@ -3,14 +3,14 @@
 
 
 /* ====================================== Twitter post ====================================== */
-textarea {
-    resize: none;
-}
+/* --------------------------------- General --------------------------------- */
 .twitterPost {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+
+/* --------------------------------- profile pic + select reply scope --------------------------------- */
 .twitterPost > div:nth-child(2){
     display: flex;
     flex-direciton: row;
@@ -37,7 +37,9 @@ textarea {
     transition: .4s;
 }
 
+/* --------------------------------- Text --------------------------------- */
 .twitterPost textarea{
+    resize: none;
     height: 200px;
     padding: 10px;
     font-size: 1.2em;
@@ -51,10 +53,14 @@ textarea {
     outline: solid 1px var(--purple3);
 }
 
+/* --------------------------------- Post options --------------------------------- */
 .twitterPostOptions{
     display: flex;
     flex-direction: row;
     gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-item: flex-end;
 }
 .twitterPostOptions > img{
     height: 36px;
@@ -65,17 +71,33 @@ textarea {
 .twitterPostOptionSelected{
     filter: invert(42%) sepia(93%) saturate(3396%) hue-rotate(225deg) brightness(101%) contrast(101%);
 }
+
+/* --------------------------------- Post options : upload media --------------------------------- */
 .tweetImgPreview{
     max-height: 200px;
     max-width: 50%;
+    object-fit: cover;
 }
 
 .twitterPost > hr{
     width: 100%;
 }
 
-.twitterPostOptions{
+/* --------------------------------- Post options : poll --------------------------------- */
+.tweetPostPoll > form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.tweetPostPoll > input:focus{
+    outline: none;
+}
+.tweetPostPoll > form > div {
     display: flex;
     flex-direction: row;
-    align-item: flex-end;
+    gap: 40px;
+}
+.tweetPostPoll > form > div input{
+    padding: 0px 10px;
 }
