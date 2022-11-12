@@ -11,8 +11,11 @@ public class UserModel {
   private String id;
   private String username;
   private String password;
-
   private String[] widgets;
+  private String lastSearchSpotify;
+  private String defaultSpotifyPlay;
+  private Object[] favoriteListSpotify;
+  private String weatherCity;
 
   public UserModel() {
   }
@@ -43,5 +46,37 @@ public class UserModel {
 
   public void setWidgets(String[] widgets) {
     this.widgets = widgets;
+  }
+
+  public String getLastSearchSpotify() {
+    return lastSearchSpotify;
+  }
+
+  public void setLastSearchSpotify(String lastSearchSpotify) {
+    this.lastSearchSpotify = lastSearchSpotify;
+  }
+
+  public String getDefaultSpotifyPlay() {
+    return defaultSpotifyPlay;
+  }
+
+  public void setDefaultSpotifyPlay(String defaultSpotifyPlay) {
+    this.defaultSpotifyPlay = defaultSpotifyPlay;
+  }
+
+  public Object[] getFavoriteListSpotify() {
+    return favoriteListSpotify;
+  }
+
+  public void setFavoriteListSpotify(Object[] favoriteListSpotify) {
+    this.favoriteListSpotify = favoriteListSpotify;
+  }
+
+  public String getWeatherCity() {
+    return weatherCity;
+  }
+
+  public void setWeatherCity(String weatherCity) {
+    this.weatherCity = weatherCity;
   }
 }

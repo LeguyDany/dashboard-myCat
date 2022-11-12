@@ -1,5 +1,7 @@
 package mycat.back.controller;
 
+import mycat.back.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ser.Serializers;
@@ -29,11 +31,15 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-
 @RestController
 @RequestMapping("/api/spotify")
 @CrossOrigin
     public class Spotify {
+
+    @Autowired
+    private UserRepository userRepository;
+
+
     public String client_id = "80db1bd3fc9845ad9a188627e68e774a";
     public String client_secret = "98d21d1a4b804bd68ad89bf4b17a2574";
     public String acces_token;
@@ -48,7 +54,16 @@ import java.util.*;
 //    public String test (HttpServletRequest request, HttpServletResponse response, @RequestBody Object obj) throws IOException, ServletException, InterruptedException, URISyntaxException {
         public String test(HttpServletRequest request) {
             System.out.println("BONJOURRRRRRRRRRRRRRRRRRRRRRRRRr");
-//        System.out.println(obj);
+            // save user
+            /*String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            System.out.println(username);
+            System.out.println(password);
+            String auth = client_id + ":" + client_secret;
+            byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.ISO_8859_1));
+            String authHeader = "Basic " + new String(encodedAuth);
+            System.out.println(authHeader);
+//        System.out.println(obj);*/
 //
 //        Map<Object, Object> form = new HashMap<>();
 //
@@ -95,11 +110,15 @@ import java.util.*;
     @PostMapping ("/savesearch")
     public String saveSearch(@RequestBody LinkedHashMap lastResearch){
         System.out.println(lastResearch.get("LastSearch").toString());
-        //Rajouter dans la value d'un champ "last research spotify" dans table user
-        return "test";
+        mycat.back.model.UserModel user = userRepository.findByUsername(this.userId);
+        user.setLastSearchSpotify(lastResearch.get("LastSearch").toString());
+        userRepository.save(user);
+        return "ok";
     }
     @GetMapping("/getlastresearch")
     public String getLastSearch(){
+        mycat.back.model.UserModel user = userRepository.findByUsername(this.userId);
+        return user.getLastSearchSpotify();
         
     }
 
