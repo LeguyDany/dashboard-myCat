@@ -1,18 +1,36 @@
 // ============================================= Imports =============================================
 // ------------------------------------- General -------------------------------------
-import React, { FunctionComponent as FC, useEffect, useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
-import {SideNav, Header} from './navigation';
+import React, {useState} from 'react';
+import {Header, SideNav} from './navigation';
 import './dashboard.css';
-import './widgets/spotify'
-// import {SpotifyWidget} from "./widgets/spotify";
-import axios from "axios";
-// ------------------------------------- Widgets -------------------------------------
-import {WeatherWidget} from './widgets/weather';
 
+import {SpotifyPlayerWidget} from "./widgets/SpotifyPlayerWidget";
+import {SearchBarSpotify} from "./widgets/SearchBarSpotify";
+import {SpotifyWaitingList} from "./widgets/SpotifyWaitingList";
+import {WeatherWidget} from "./widgets/weather";
+
+
+// ------------------------------------- Widgets -------------------------------------
+// import {} from './widgets/weather';
+
+// ============================================= Components =============================================
+// ------------------------------------- Test -------------------------------------
+const Clock = () => {
+    return(
+        <input type="button" value="Bonjour"/>
+    )
+}
+
+// import {SpotifyWidget} from "./widgets/spotify";
+
+
+
+// ------------------------------------- Widgets -------------------------------------
+// const SpotifyWebApi = require('spotify-web-api-node');
 
 
 // ============================================= Components =============================================
+
 // ------------------------------------- Widget building -------------------------------------
 interface widgetType {
     widgetType:string,
@@ -26,10 +44,28 @@ const WidgetTest = ({widgetType, Widget}:widgetType) => {
     )
 }
 
+
+interface Track {
+    albumUrl: string,
+    artist: string,
+    title :string,
+    uri : string
+}
+
 // ------------------------------------- Composition -------------------------------------
 export function ComposeDashboard(){
     const [page, setPage] = useState("Dashboard");
 
+    const [playingTrack, setPlayingTrack] = useState<string>("")
+    const [waitingList, setWaitingList] = useState<Array<Track>>([]);
+
+    const playNow = (track : Track) => {
+        setPlayingTrack(track.uri)
+    }
+    const addToWaitingList =(track : Track) => {
+        if(waitingList.includes(track)) return
+        setWaitingList([...waitingList, track])
+    }
 
     return(
         <>
@@ -37,6 +73,15 @@ export function ComposeDashboard(){
             <section className="content">
                 <Header page={page}/>
                 <article>
+                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
+                    <WidgetTest widgetType="widget2" Widget={<Clock/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
+                    <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack)}/>
+                    <WidgetTest widgetType="widget1" Widget={<SpotifyWaitingList waitingList={waitingList}/>}/>
+
                     <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
                 </article>
             </section>
