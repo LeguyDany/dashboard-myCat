@@ -9,6 +9,14 @@ import {SearchBarSpotify} from "./widgets/SearchBarSpotify";
 import {SpotifyWaitingList} from "./widgets/SpotifyWaitingList";
 import {WeatherWidget} from "./widgets/weather";
 
+// import {SpotifyWidget} from "./widgets/spotify";
+
+
+
+// ------------------------------------- Widgets -------------------------------------
+
+import {PostTweet} from './widgets/twitter';
+
 
 // ------------------------------------- Widgets -------------------------------------
 // import {} from './widgets/weather';
@@ -21,11 +29,6 @@ const Clock = () => {
     )
 }
 
-// import {SpotifyWidget} from "./widgets/spotify";
-
-
-
-// ------------------------------------- Widgets -------------------------------------
 // const SpotifyWebApi = require('spotify-web-api-node');
 
 
@@ -81,8 +84,8 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
                     <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack)}/>
                     <WidgetTest widgetType="widget1" Widget={<SpotifyWaitingList waitingList={waitingList}/>}/>
-
                     <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
+                    <WidgetTest widgetType="widget2" Widget={<PostTweet/>}/>
                 </article>
             </section>
         </>
