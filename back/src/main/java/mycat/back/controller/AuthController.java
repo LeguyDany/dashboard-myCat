@@ -75,7 +75,7 @@ public class AuthController {
     }
 
     UserDetails loadedUser = userService.loadUserByUsername(username);
-    String generatedToken = jwtUtils.generateToken(loadedUser);
-    return ResponseEntity.ok(new AuthenticationResponse(generatedToken));
+    String token = jwtUtils.generateToken(loadedUser);
+    return ResponseEntity.ok(new AuthenticationResponse(token));
   }
 }

@@ -3,6 +3,8 @@ package mycat.back.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+
 
 @Document(collection = "user")
 public class UserModel {
@@ -11,11 +13,13 @@ public class UserModel {
   private String id;
   private String username;
   private String password;
-  private String[] widgets;
   private String lastSearchSpotify;
   private String defaultSpotifyPlay;
   private Object[] favoriteListSpotify;
   private String weatherCity;
+
+  private ArrayList<WidgetModel> widgets = new ArrayList<>();
+
 
   public UserModel() {
   }
@@ -40,11 +44,11 @@ public class UserModel {
     this.password = password;
   }
 
-  public String[] getWidgets() {
+  public ArrayList<WidgetModel> getWidgets() {
     return widgets;
   }
 
-  public void setWidgets(String[] widgets) {
+  public void setWidgets(ArrayList<WidgetModel> widgets) {
     this.widgets = widgets;
   }
 

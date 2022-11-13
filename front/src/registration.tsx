@@ -27,7 +27,7 @@ export function Login() {
   /* Sends the login information to the backend. */
   function login() {
     let item = { username, password };
-    fetch("/login", {
+    fetch("/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export function Login() {
     })
       .then((res) => res.json())
       .then((result) => {
-        localStorage.setItem("user-info", JSON.stringify(result));
+        localStorage.setItem("user-info", result.response);
         navigate("/dashboard");
       });
   }

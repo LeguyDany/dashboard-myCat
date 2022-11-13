@@ -28,5 +28,8 @@ public class UserService implements UserDetailsService {
     return new User(name, pwd, new ArrayList<>());
   }
 
+  // add widget to user
+
+
 
 }

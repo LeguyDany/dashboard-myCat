@@ -6,6 +6,7 @@
       <option name="customHeaders">
         <set>
           <option value="ContentType" />
+          <option value="user-info" />
         </set>
       </option>
     </inspection_tool>
