@@ -24,7 +24,11 @@ interface formDataTweet{
     choice2: string | undefined,
     choice3: string | undefined,
     choice4: string | undefined,
-    pollLength: pollLength | undefined
+    days: string,
+    hours: string,
+    minutes: string,
+    access_token_twitter:string | null ,
+    refresh_token_twitter:string | null,
 }
 
 
@@ -37,16 +41,16 @@ export function PostTweet(){
     const access_token_twitter = localStorage.getItem("access_token_twitter");
     const refresh_token_twitter = localStorage.getItem("refresh_token_twitter");
     const [urlProfile, setUrlProfile] = useState<string>();
-    const [media, setMedia] = useState<any>();
     const [text, setText] = useState<string>("");
     const [reply_settings, setReplySettings] = useState<String>();
-    const [imgSelect, setImgSelect] = useState<string>("");
     const [pollSelect, setPollSelect] = useState<string>("");
     const [choice1, setChoice1] = useState<string>("");
     const [choice2, setChoice2] = useState<string>("");
     const [choice3, setChoice3] = useState<string>("");
     const [choice4, setChoice4] = useState<string>("");
-    const [pollLength, setPollLength] = useState<pollLength>({days:"0", hours:"0", minutes:"0"});
+    const [days, setDays] = useState<string>("0");
+    const [hours, setHours] = useState<string>("0");
+    const [minutes, setMinutes] = useState<string>("0");
 
 
     const clearPoll = () => {
@@ -55,7 +59,9 @@ export function PostTweet(){
         setChoice2("");
         setChoice3("");
         setChoice4("");
-        setPollLength({days:"0", hours:"0", minutes:"0"});
+        setDays("0");
+        setHours("0");
+        setMinutes("0");
         // @ts-ignore
         document.querySelector('#choice1').value = null;
         // @ts-ignore
@@ -72,25 +78,6 @@ export function PostTweet(){
         document.querySelector('#minutes').value = null;
     }
 
-    const uploadFile = (e:any) => {
-        e.preventDefault();
-        setMedia(React.createElement("img", { src: URL.createObjectURL(e.target.files[0]), className:"tweetImgPreview"}));
-    }
-
-    const handleImgOption = () => {
-        switch(imgSelect){
-            case "":
-                setImgSelect("twitterPostOptionSelected");
-                break;
-            case "twitterPostOptionSelected":
-                setImgSelect("");
-                // @ts-ignore
-                document.querySelector('#media').value = null;
-                break;
-        }
-        clearPoll();
-    }
-
     const handlePollOption = () => {
         switch(pollSelect){
             case "":
@@ -100,17 +87,10 @@ export function PostTweet(){
                 clearPoll();
                 break;
         }
-        // @ts-ignore
-        document.querySelector('#media').value = null;
-        setImgSelect("");
-        setMedia(null);
     }
 
     const postForm = async () => {
         let formData = new FormData();
-
-        const imageFile:any = document.querySelector('#media');
-        formData.append("media", imageFile.files[0]);
 
         const data:formDataTweet = {
             text: text,
@@ -118,7 +98,11 @@ export function PostTweet(){
             choice2: choice2,
             choice3: choice3,
             choice4: choice4,
-            pollLength: pollLength
+            days: days,
+            hours: hours,
+            minutes: minutes,
+            access_token_twitter: access_token_twitter,
+            refresh_token_twitter: refresh_token_twitter,
         }
 
         for(const item in data){
@@ -129,7 +113,7 @@ export function PostTweet(){
         try {
             const res = await axios.post("http://localhost:8080/api/twitter/postTweet", formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             });
             console.log(res.data);
@@ -174,13 +158,6 @@ export function PostTweet(){
 
             <hr className="lightSeparator"/>
 
-            {/* --------------------------------- media upload ---------------------- */}
-            <form className={`tweetPostImgUpload ${imgSelect=="twitterPostOptionSelected"?"":"displayNone"}`}>
-                {media}
-                <input type="file" name="media" id="media" onChange={e => uploadFile(e)} />
-                <hr className="lightSeparator"/>
-            </form>
-
             {/* --------------------------------- poll ---------------------- */}
             <div className={`tweetPostPoll ${pollSelect=="twitterPostOptionSelected"?"":"displayNone"}`}>
                 <form>
@@ -195,15 +172,15 @@ export function PostTweet(){
                         <div>
                             <label>
                                 <p>Days</p>
-                                <input type="number" onChange={e => {pollLength["days"]=e.target.value}} name="days" id="days" min={0} max={7}/>
+                                <input type="number" onChange={e => {setDays(e.target.value)}} name="days" id="days" min={0} max={7}/>
                             </label>
                             <label>
                                 <p>Hours</p>
-                                <input type="number" onChange={e => {pollLength["hours"]=e.target.value}} name="hours" id="hours" min={0} max={23}/>
+                                <input type="number" onChange={e => {setHours(e.target.value)}} name="hours" id="hours" min={0} max={23}/>
                             </label>
                             <label>
                                 <p>Minutes</p>
-                                <input type="number" onChange={e => {pollLength["minutes"]=e.target.value}} name="minutes" id="minutes" min={0} max={59}/>
+                                <input type="number" onChange={e => {setMinutes(e.target.value)}} name="minutes" id="minutes" min={0} max={59}/>
                             </label>
                         </div>
                     </div>
@@ -214,7 +191,6 @@ export function PostTweet(){
             </div>
 
             <div className={"twitterPostOptions"}>
-                <img src={imgIcon} className={imgSelect} onClick={handleImgOption}/>
                 <img src={pollIcon} className={pollSelect} onClick={handlePollOption}/>
             </div>
 

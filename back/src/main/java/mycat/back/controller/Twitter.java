@@ -3,8 +3,10 @@ package mycat.back.controller;
 import com.twitter.clientlib.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONObject;
+import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.json.JSONArray;
 
@@ -41,7 +43,6 @@ public class Twitter {
 
     private static String client_id = "T3ZMY1lIQkw2b2FmWmlIdmdfN1M6MTpjaQ";
     private static String client_secret = "US3Pzl0Bgni8dMXoqU-ub1yHq5sEv8zoFc9VT_W0Fzudf7vzrK";
-    private static String bearer_token = "AAAAAAAAAAAAAAAAAAAAAEEfiwEAAAAA2xa2Jpd0sP04JWHUriUVClevIAM%3DwNoYySWDD1XEgRlRl6i3Dbm0I5qmvkwSdILBOXkSOdfKQNEu4s";
 
     private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
         var builder = new StringBuilder();
@@ -130,6 +131,10 @@ public class Twitter {
         return jsonNode.toString();
     }
 
+    private Integer convertDays(String days, String hours, String minutes){
+        return Integer.parseInt(days)*60*24 + Integer.parseInt(hours)*60 + Integer.parseInt(minutes);
+    }
+
     @PostMapping("/postTweet")
     public String postTweet(HttpServletRequest request, HttpServletResponse response, @RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
 
@@ -150,42 +155,48 @@ public class Twitter {
         // Pass credentials to library client
         apiInstance.setTwitterCredentials(credentials);
 
+        // Set the params values
+        CreateTweetRequest createTweetRequest = new CreateTweetRequest();
+        CreateTweetRequestPoll createTweetRequestPoll = new CreateTweetRequestPoll();
+
+        // The text of the Tweet
+        createTweetRequest.text(obj.get("text").toString());
+
+        if(obj.get("choice1") != ""){
+            List<String> pollOptions;
+            if(obj.get("choice4") != ""){
+                pollOptions = Arrays.asList(obj.get("choice1").toString(), obj.get("choice2").toString(), obj.get("choice3").toString(), obj.get("choice4").toString());
+            } else if(obj.get("choice3") != ""){
+                pollOptions = Arrays.asList(obj.get("choice1").toString(), obj.get("choice2").toString(), obj.get("choice3").toString());
+            }else {
+                pollOptions = Arrays.asList(obj.get("choice1").toString(), obj.get("choice2").toString());
+            }
+
+            createTweetRequestPoll.options(pollOptions);
 
 
+            // Duration of the poll in minutes
+            createTweetRequestPoll.durationMinutes(
+                    convertDays(obj.get("days").toString(),
+                            obj.get("hours").toString(),
+                            obj.get("minutes").toString() )
+            );
 
+            createTweetRequest.poll(createTweetRequestPoll);
+        }
 
-
-        return "bonjour";
-
-
-//        // Set the params values
-//        CreateTweetRequest createTweetRequest = new CreateTweetRequest();
-//        CreateTweetRequestPoll createTweetRequestPoll = new CreateTweetRequestPoll();
-//
-//        // The text of the Tweet
-//        createTweetRequest.text("Are you excited for the weekend?");
-//
-//        // Options for a Tweet with a poll
-//        List<String> pollOptions = Arrays.asList("Yes", "Maybe", "No");
-//        createTweetRequestPoll.options(pollOptions);
-//
-//        // Duration of the poll in minutes
-//        createTweetRequestPoll.durationMinutes(120);
-//
-//        createTweetRequest.poll(createTweetRequestPoll);
-//
-//        try {
-//            TweetCreateResponse result = apiInstance.tweets().createTweet(createTweetRequest);
-//            System.out.println(result);
-//            return result.toString();
-//        } catch (ApiException e) {
-//            System.err.println("Exception when calling TweetsApi#createTweet");
-//            System.err.println("Status code: " + e.getCode());
-//            System.err.println("Reason: " + e.getResponseBody());
-//            System.err.println("Response headers: " + e.getResponseHeaders());
-//            e.printStackTrace();
-//            return "error";
-//        }
+        try {
+            TweetCreateResponse result = apiInstance.tweets().createTweet(createTweetRequest);
+            System.out.println(result);
+            return result.toString();
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TweetsApi#createTweet");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+            return "error";
+        }
 
     }
 
