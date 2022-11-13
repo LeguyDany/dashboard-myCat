@@ -81,6 +81,11 @@
 .twitterPostOptionSelected{
     filter: invert(42%) sepia(93%) saturate(3396%) hue-rotate(225deg) brightness(101%) contrast(101%);
 }
+@media (max-width: 1200px){
+    .twitterPost > div > img {
+        display: none;
+    }
+}
 
 /* --------------------------------- Post options : upload media --------------------------------- */
 .tweetImgPreview{
@@ -129,4 +134,52 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+
+
+/* ====================================== Twitter Get Tweets by Hashtag ====================================== */
+.getTweetByHashtag{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.imgTweetHashtag{
+    max-height: 300px;
+    max-width: 50%;
+}
+.getTweetByHashtag form{
+    display: flex;
+    flex-direciton: row;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.getTweetByHashtag form > input[type=text]{
+    width: calc(66% - 40px);
+}
+.getTweetByHashtag form > input[type=submit]{
+    width: 34%;
+}
+.singleTweetByHashtag > div{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0px;
+}
+.singleTweetByHashtag > div > img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+}
+.singleTweetByHashtag p{
+    margin: 0px;
+}
+.tweetsHashtagUserName {
+    font-weight: 700;
+}
+.tweetsHashtagScreenName{
+    color: var(--purple3);
 }

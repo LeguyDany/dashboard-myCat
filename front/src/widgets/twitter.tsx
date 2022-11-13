@@ -13,10 +13,8 @@ import pollIcon from '../assets/icons/chat-poll-line.svg';
 
 // ============================================= Components =============================================
 // ------------------------------------- Interfaces -------------------------------------
-interface pollLength{
-    days:string;
-    hours:string;
-    minutes:string;
+interface titleType{
+    title:string;
 }
 interface formDataTweet{
     text: string,
@@ -31,9 +29,84 @@ interface formDataTweet{
     refresh_token_twitter:string | null,
     reply_settings : string,
 }
+interface hashtagTweet{
+    userName: string;
+    profilePic: string;
+    screenName: string;
+    createdAt: string;
+    text: string;
+    mentionedUsers: string[] | null | undefined;
+    hashtags: string[] | null | undefined;
+}
+
+// ------------------------------------- Children -------------------------------------
+// -------------- General --------------
+function CompHead({title}:titleType){
+    return(
+        <div className="compHead">
+            <div>
+                <img src={twitterIcon}/>
+                <h1>Twitter - {title}</h1>
+            </div>
+            <hr/>
+        </div>
+    )
+}
+
+// -------------- GetTweetByHashtag --------------
+function SetupTweetsHashtag({arrayTweets}:any){
+    const [images, setImages] = useState<string[]>();
+
+    const checkImage = (toCheck:any) => {
+        let imageArray = [];
+
+        if(toCheck.extended_entities !== undefined){
+            for(const item in toCheck.extended_entities.media){
+                imageArray.push(React.createElement("img", {key:toCheck.extended_entities.media[item], src:toCheck.extended_entities.media[item].media_url, alt:"Image file", className:"imgTweetHashtag"}));
+            }
+        }
+        return imageArray;
+    }
 
 
-// ------------------------------------- Child -------------------------------------
+    return(
+     <>
+         {arrayTweets.map((tweet:any, index:KeyType) => (
+             <>
+                 <HashtagTweet userName={tweet.user.name}
+                               profilePic={tweet.user.profile_image_url}
+                               screenName={tweet.user.screen_name}
+                               createdAt={tweet.created_at}
+                               text={tweet.text}
+                               mentionedUsers={tweet.entities.user_mentions}
+                               hashtags={tweet.entities.hashtags}
+                               key={index}
+                 />
+                 {checkImage(tweet)}
+             </>
+         ))}
+     </>
+    )
+}
+function HashtagTweet({userName, profilePic, screenName, createdAt, text, mentionedUsers, hashtags}:hashtagTweet){
+
+    return(
+        <article className="singleTweetByHashtag">
+            <hr className="lightSeparator"/>
+            <div>
+                <img src={profilePic} alt="Profile picture"/>
+                <p>
+                    <span className="tweetsHashtagUserName">{userName}</span> <br/>
+                    <span className="tweetsHashtagScreenName">@{screenName}</span> {createdAt.slice(4,16)} {createdAt.slice(26)}
+                </p>
+            </div>
+            <p>
+                {text}
+            </p>
+
+        </article>
+    )
+}
 
 
 // ------------------------------------- Main component -------------------------------------
@@ -52,7 +125,6 @@ export function PostTweet(){
     const [days, setDays] = useState<string>("0");
     const [hours, setHours] = useState<string>("0");
     const [minutes, setMinutes] = useState<string>("0");
-
 
     const clearPoll = () => {
         setPollSelect("");
@@ -136,13 +208,7 @@ export function PostTweet(){
 
     return(
         <section className="twitterPost">
-            <div className="compHead">
-                <div>
-                    <img src={twitterIcon}/>
-                    <h1>Twitter - Post a tweet</h1>
-                </div>
-                <hr/>
-            </div>
+            <CompHead title="Post a Tweet"/>
 
             <div>
                 <img src={urlProfile} alt="Profile picture"/>
@@ -197,6 +263,42 @@ export function PostTweet(){
             </div>
 
             <input type="submit" value="Post a poll tweet" onClick={postForm}/>
+        </section>
+    )
+}
+
+export function GetTweetByHashtag(){
+    const [hashtag, setHashtag] = useState<string>("");
+    const [tweets, setTweets] = useState<[]>([]);
+    const [submit, setSubmit] = useState<boolean>(false);
+
+    const handleSubmit = async (e:any) => {
+        e.preventDefault();
+        setSubmit(prevState => !prevState);
+        const res = await axios.post("http://localhost:8080/api/twitter/getByHashtag", {hashtag});
+        setTweets(res.data.statuses);
+    }
+
+    useEffect(() => {
+        const timer = setInterval( async () => {
+            const res = await axios.post("http://localhost:8080/api/twitter/getByHashtag", {hashtag});
+            setTweets(res.data.statuses);
+        }, 15*1000);
+        return () => {
+            clearInterval(timer);
+        };
+    }, [submit])
+
+    return(
+        <section className="getTweetByHashtag">
+            <CompHead title="Tweets by #"/>
+            <form onSubmit={e => handleSubmit(e)}>
+                <input type="text" onChange={e => setHashtag(e.target.value)}/>
+                <input type="submit" value="Search"/>
+            </form>
+
+            <SetupTweetsHashtag arrayTweets={tweets}/>
+
         </section>
     )
 }

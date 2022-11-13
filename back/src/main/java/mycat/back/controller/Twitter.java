@@ -113,12 +113,13 @@ public class Twitter {
         }
     }
 
-    @GetMapping("/getByHashtag")
-    public String getByHashtag() throws URISyntaxException, IOException, InterruptedException{
+    @PostMapping("/getByHashtag")
+    public String getByHashtag(@RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
+
         HttpRequest request = HttpRequest
                 .newBuilder()
                 .header("Authorization", "Bearer "+"AAAAAAAAAAAAAAAAAAAAAEEfiwEAAAAA2xa2Jpd0sP04JWHUriUVClevIAM%3DwNoYySWDD1XEgRlRl6i3Dbm0I5qmvkwSdILBOXkSOdfKQNEu4s")
-                .uri(new URI("https://api.twitter.com/1.1/search/tweets.json?q=birds&result_type=recent"))
+                .uri(new URI("https://api.twitter.com/1.1/search/tweets.json?result_type=recent&q=" + obj.get("hashtag") + "-filter:retweets"))
                 .GET()
                 .build();
 
@@ -136,7 +137,7 @@ public class Twitter {
     }
 
     @PostMapping("/postTweet")
-    public String postTweet(HttpServletRequest request, HttpServletResponse response, @RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
+    public String postTweet(@RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
 
         String client_id = this.client_id;
         String secret_client = this.client_secret;
@@ -229,8 +230,7 @@ public class Twitter {
         apiInstance.setTwitterCredentials(credentials);
 
         // Set<String> | A comma separated list of User fields to display.
-        Set<String> userFields = new HashSet<>(Arrays.asList("profile_image_url"));
-
+        Set<String> userFields = new HashSet<>(Arrays.asList("profile_image_url", "id"));
         try {
             SingleUserLookupResponse result = apiInstance.users().findMyUser(null, null, userFields);
             return result.getData().toJson();
