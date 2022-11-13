@@ -1,12 +1,10 @@
 package mycat.back.repository;
 
-import mycat.back.model.UserModel;
+import mycat.back.model.WidgetModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends MongoRepository<UserModel, String> {
-
-  UserModel findByUsername(String username);
-
+public interface WidgetRepository extends MongoRepository<WidgetModel, String> {
+  WidgetModel findByName(String name);
 }

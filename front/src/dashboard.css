@@ -1,0 +1,36 @@
+@import "index.css";
+.content{
+    position: absolute;
+    left: 20vw;
+}
+.content > article{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    padding: 20px;
+}
+.widget1{
+    background-color: white;
+    width: calc(50% - 10*2px - 3px - 30*2px);
+    margin: 10px;
+    padding: 30px;
+    height: fit-content;
+    max-height: 500px;
+    overflow-y: scroll;
+    border-left: solid 3px var(--purple3);
+}
+.widget2{
+    background-color: white;
+    width: calc(100% - 10*2px - 3px - 30*2px);
+    padding: 30px;
+    margin: 10px;
+    height: fit-content;
+    border-left: solid 3px var(--purple3);
+}
+
+@media (max-width: 1050px){
+    .widget1{
+        width: calc(100% - 10*2px - 3px - 30*2px);
+    }
+
+}
