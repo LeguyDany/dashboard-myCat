@@ -185,6 +185,17 @@ public class Twitter {
             createTweetRequest.poll(createTweetRequestPoll);
         }
 
+        switch(obj.get("reply_settings").toString()){
+            case "following":
+                System.out.println(obj.get("reply_settings").toString());
+                createTweetRequest.replySettings(CreateTweetRequest.ReplySettingsEnum.FOLLOWING);
+                break;
+            case "mentionedUsers":
+                System.out.println(obj.get("reply_settings").toString());
+                createTweetRequest.replySettings(CreateTweetRequest.ReplySettingsEnum.MENTIONEDUSERS);
+                break;
+        }
+
         try {
             TweetCreateResponse result = apiInstance.tweets().createTweet(createTweetRequest);
             System.out.println(result);

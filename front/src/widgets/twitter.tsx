@@ -29,6 +29,7 @@ interface formDataTweet{
     minutes: string,
     access_token_twitter:string | null ,
     refresh_token_twitter:string | null,
+    reply_settings : string,
 }
 
 
@@ -41,8 +42,8 @@ export function PostTweet(){
     const access_token_twitter = localStorage.getItem("access_token_twitter");
     const refresh_token_twitter = localStorage.getItem("refresh_token_twitter");
     const [urlProfile, setUrlProfile] = useState<string>();
-    const [text, setText] = useState<string>("");
-    const [reply_settings, setReplySettings] = useState<String>();
+    const [text, setText] = useState<string>("everyone");
+    const [reply_settings, setReplySettings] = useState<string>("");
     const [pollSelect, setPollSelect] = useState<string>("");
     const [choice1, setChoice1] = useState<string>("");
     const [choice2, setChoice2] = useState<string>("");
@@ -103,6 +104,7 @@ export function PostTweet(){
             minutes: minutes,
             access_token_twitter: access_token_twitter,
             refresh_token_twitter: refresh_token_twitter,
+            reply_settings : reply_settings,
         }
 
         for(const item in data){
@@ -145,7 +147,7 @@ export function PostTweet(){
             <div>
                 <img src={urlProfile} alt="Profile picture"/>
                 <select onChange={e => setReplySettings(e.target.value)}>
-                    <option value="">Everyone can answer</option>
+                    <option value="everyone">Everyone can answer</option>
                     <option value="following">Only people I follow can answer</option>
                     <option value="mentionedUsers">Only mentioned users can answer</option>
                 </select>
