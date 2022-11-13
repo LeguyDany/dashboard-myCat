@@ -11,7 +11,7 @@ import axios from "axios";
 
 // ------------------------------------- Widgets -------------------------------------
 import {WeatherWidget} from './widgets/weather';
-import {PostTweet, GetTweetByHashtag} from './widgets/twitter';
+import {PostTweet, GetTweetByHashtag, GetTwitterUser} from './widgets/twitter';
 // const SpotifyWebApi = require('spotify-web-api-node');
 
 
@@ -43,6 +43,7 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget1" Widget={<PostTweet/>}/>
                     <WidgetTest widgetType="widget1" Widget={<GetTweetByHashtag/>}/>
                     <WidgetTest widgetType="widget1" Widget={<GetTweetByHashtag/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<GetTwitterUser/>}/>
                 </article>
             </section>
         </>

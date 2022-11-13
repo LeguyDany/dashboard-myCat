@@ -245,4 +245,22 @@ public class Twitter {
 
     }
 
+    @PostMapping("/getUserInfo")
+    public String getUserInfo(@RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
+
+        HttpRequest request = HttpRequest
+                .newBuilder()
+                .header("Authorization", "Bearer "+"AAAAAAAAAAAAAAAAAAAAAEEfiwEAAAAA2xa2Jpd0sP04JWHUriUVClevIAM%3DwNoYySWDD1XEgRlRl6i3Dbm0I5qmvkwSdILBOXkSOdfKQNEu4s")
+                .uri(new URI("https://api.twitter.com/1.1/users/show.json?screen_name=" + obj.get("screen_name")))
+                .GET()
+                .build();
+
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readValue(response.body(), JsonNode.class);
+
+        return jsonNode.toString();
+    }
 }

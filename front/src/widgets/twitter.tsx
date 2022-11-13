@@ -302,3 +302,25 @@ export function GetTweetByHashtag(){
         </section>
     )
 }
+
+export function GetTwitterUser(){
+    const [screenName, setSreenName] = useState<string>();
+    const [] = useState();
+    const [] = useState();
+
+    const handleSubmit = async (e:any) => {
+        e.preventDefault();
+        const res = await axios.post("http://localhost:8080/api/twitter/getUserInfo", {screen_name : screenName});
+        console.log(res.data);
+    }
+
+    return(
+        <section className="getTwitterUser">
+            <CompHead title="Get User info"/>
+            <form onSubmit={e => handleSubmit(e)}>
+                <input type="text" onChange={e => setSreenName(e.target.value)} placeholder="Insert user screen name"/>
+                <input type="submit" value="Search"/>
+            </form>
+        </section>
+    )
+}
