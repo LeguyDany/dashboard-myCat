@@ -1,35 +1,30 @@
 package mycat.back.controller;
 
 import mycat.back.repository.UserRepository;
+import mycat.back.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ser.Serializers;
-import org.apache.tomcat.jni.Buffer;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-
 import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
-
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import mycat.back.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 @RequestMapping("/api/spotify")
@@ -41,6 +36,9 @@ import java.util.*;
     public String client_id = "80db1bd3fc9845ad9a188627e68e774a";
     public String client_secret = "98d21d1a4b804bd68ad89bf4b17a2574";
     public String userId;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
 
     @PostMapping("/login")
@@ -86,18 +84,69 @@ import java.util.*;
     }
 
     @PostMapping ("/savesearch")
-    public String saveSearch(@RequestBody LinkedHashMap lastResearch){
-        System.out.println(lastResearch.get("LastSearch").toString());
-        mycat.back.model.UserModel user = userRepository.findByUsername(this.userId);
+    public String saveSearch(@RequestBody LinkedHashMap lastResearch, HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = null;
+        String jwtToken = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwtToken);
+        }
+        mycat.back.model.UserModel user = userRepository.findByUsername(username);
         user.setLastSearchSpotify(lastResearch.get("LastSearch").toString());
         userRepository.save(user);
-        return "ok";
+        return "Research Saved";
     }
+
     @GetMapping("/getlastresearch")
-    public String getLastSearch(){
-        mycat.back.model.UserModel user = userRepository.findByUsername(this.userId);
+    public String getLastSearch(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = null;
+        String jwtToken = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwtToken);
+        }
+        mycat.back.model.UserModel user = userRepository.findByUsername(username);
         return user.getLastSearchSpotify();
     }
+    @GetMapping("/getautoplay")
+    public String getAutoPlay(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = null;
+        String jwtToken = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwtToken);
+        }
+        mycat.back.model.UserModel user = userRepository.findByUsername(username);
+        return user.getDefaultSpotifyPlay();
+    }
+
+    @PostMapping ("/setautoplay")
+    public String setAutoPlay(@RequestBody LinkedHashMap track, HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = null;
+        String jwtToken = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwtToken);
+        }
+        mycat.back.model.UserModel user = userRepository.findByUsername(username);
+        user.setDefaultSpotifyPlay(track.get("track").toString());
+        userRepository.save(user);
+        return "autoPlay Saved";
+    }
+
+
+
+//    public static String getBearerTokenHeader() {
+//        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization");
+//    }
 
 //    @GetMapping("/me")
 //    public String getMe() throws IOException, InterruptedException {

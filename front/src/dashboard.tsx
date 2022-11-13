@@ -1,6 +1,6 @@
 // ============================================= Imports =============================================
 // ------------------------------------- General -------------------------------------
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Header, SideNav} from './navigation';
 import './dashboard.css';
 
@@ -8,7 +8,7 @@ import {SpotifyPlayerWidget} from "./widgets/SpotifyPlayerWidget";
 import {SearchBarSpotify} from "./widgets/SearchBarSpotify";
 import {SpotifyWaitingList} from "./widgets/SpotifyWaitingList";
 import {WeatherWidget} from "./widgets/weather";
-
+import axios from "axios";
 // import {SpotifyWidget} from "./widgets/spotify";
 
 
@@ -61,6 +61,8 @@ export function ComposeDashboard(){
 
     const [playingTrack, setPlayingTrack] = useState<string>("")
     const [waitingList, setWaitingList] = useState<Array<Track>>([]);
+    const [autoPlayTrack, setAutoPlayTrack] = useState("")
+    const [userInfo, setUserInfo] = useState(localStorage.getItem("user-info") || undefined)
 
     const playNow = (track : Track) => {
         setPlayingTrack(track.uri)
@@ -69,6 +71,27 @@ export function ComposeDashboard(){
         if(waitingList.includes(track)) return
         setWaitingList([...waitingList, track])
     }
+    const autoPlay = (track : Track) => {
+        setAutoPlayTrack(track.uri)
+        axios.post("http://localhost:8080/api/spotify/setautoplay",{track: track.uri},{
+            headers: {
+                authorization: `Bearer ${userInfo}`
+            }
+        })
+    }
+    const getAutoPlay = async () => {
+        const res = await axios.get("http://localhost:8080/api/spotify/getautoplay", {
+            headers:{
+                authorization: `Bearer ${userInfo}`
+            }
+        })
+        setAutoPlayTrack(res.data)
+    }
+
+    useEffect(()=>{
+        getAutoPlay();
+
+    }, [])
 
     return(
         <>
@@ -81,11 +104,11 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget2" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
-                    <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack)}/>
+                    <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify autoPlay={autoPlay} playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
+                    <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack, autoPlayTrack)}/>
                     <WidgetTest widgetType="widget1" Widget={<SpotifyWaitingList waitingList={waitingList}/>}/>
-                    <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
-                    <WidgetTest widgetType="widget2" Widget={<PostTweet/>}/>
+                    {/*<WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>*/}
+                    {/*<WidgetTest widgetType="widget2" Widget={<PostTweet/>}/>*/}
                 </article>
             </section>
         </>

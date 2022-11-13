@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import SpotifyPlayer from "react-spotify-web-playback"
 
 
-export function SpotifyPlayerWidget(trackUri: string){
+export function SpotifyPlayerWidget(trackUri: string, autoPlayTrack: string){
     //tracks, changeTrack
     const tokenSpotify = localStorage.getItem("tokenSpotify")
     const [play, setPlay] = useState(false)
@@ -19,7 +19,7 @@ export function SpotifyPlayerWidget(trackUri: string){
                                if(!state.isPlaying) setPlay(false)
                            }}
                            play={play}
-                           uris={trackUri ? [trackUri] : []}
+                           uris={trackUri ? [trackUri] : [autoPlayTrack]}
             />
             {/*<button onClick={changeTrack (tracks)}></button>*/}
         </div>
