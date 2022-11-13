@@ -30,11 +30,6 @@ h1{
   margin: 0px;
   color: var(--purple1);
 }
-.twitterPost h2 {
-  margin: 0px 0px 10px 0px;
-  color: var(--purple1);
-  font-weight: 600;
-}
 
 #root {
   display: flex;

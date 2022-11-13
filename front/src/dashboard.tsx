@@ -9,13 +9,12 @@ import {SearchBarSpotify} from "./widgets/SearchBarSpotify";
 import {SpotifyWaitingList} from "./widgets/SpotifyWaitingList";
 import {WeatherWidget} from "./widgets/weather";
 import axios from "axios";
+import {PostTweet, GetTweetByHashtag, GetTwitterUser} from './widgets/twitter';
 // import {SpotifyWidget} from "./widgets/spotify";
 
 
 
 // ------------------------------------- Widgets -------------------------------------
-
-import {PostTweet} from './widgets/twitter';
 
 
 // ------------------------------------- Widgets -------------------------------------
@@ -28,7 +27,6 @@ const Clock = () => {
         <input type="button" value="Bonjour"/>
     )
 }
-
 // const SpotifyWebApi = require('spotify-web-api-node');
 
 
@@ -77,11 +75,6 @@ export function ComposeDashboard(){
                 authorization: `Bearer ${userInfo}`
             }
         })
-        // const res2 = await axios.get("http://localhost:8080/api/spotify/getfavoritlist",{
-        //     headers:{
-        //         authorization: `Bearer ${userInfo}`
-        //     }})
-        // await setWaitingList([...res2.data])
     }
 
     const autoPlay = (track : Track) => {
@@ -109,7 +102,6 @@ export function ComposeDashboard(){
                     authorization: `Bearer ${userInfo}`
                 }})
             await setWaitingList(res.data)
-            console.log(res.data)
         })()
     }, [])
 
@@ -129,6 +121,11 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget1" Widget={SpotifyWaitingList(waitingList, playNow)}/>
                     {/*<WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>*/}
                     {/*<WidgetTest widgetType="widget2" Widget={<PostTweet/>}/>*/}
+                    <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<PostTweet/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<GetTweetByHashtag/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<GetTweetByHashtag/>}/>
+                    <WidgetTest widgetType="widget1" Widget={<GetTwitterUser/>}/>
                 </article>
             </section>
         </>

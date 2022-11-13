@@ -3,8 +3,10 @@ package mycat.back.controller;
 import com.twitter.clientlib.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONObject;
+import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.json.JSONArray;
 
@@ -41,7 +43,6 @@ public class Twitter {
 
     private static String client_id = "T3ZMY1lIQkw2b2FmWmlIdmdfN1M6MTpjaQ";
     private static String client_secret = "US3Pzl0Bgni8dMXoqU-ub1yHq5sEv8zoFc9VT_W0Fzudf7vzrK";
-    private static String bearer_token = "AAAAAAAAAAAAAAAAAAAAAEEfiwEAAAAA2xa2Jpd0sP04JWHUriUVClevIAM%3DwNoYySWDD1XEgRlRl6i3Dbm0I5qmvkwSdILBOXkSOdfKQNEu4s";
 
     private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data){
         var builder = new StringBuilder();
@@ -112,12 +113,13 @@ public class Twitter {
         }
     }
 
-    @GetMapping("/getByHashtag")
-    public String getByHashtag() throws URISyntaxException, IOException, InterruptedException{
+    @PostMapping("/getByHashtag")
+    public String getByHashtag(@RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
+
         HttpRequest request = HttpRequest
                 .newBuilder()
                 .header("Authorization", "Bearer "+"AAAAAAAAAAAAAAAAAAAAAEEfiwEAAAAA2xa2Jpd0sP04JWHUriUVClevIAM%3DwNoYySWDD1XEgRlRl6i3Dbm0I5qmvkwSdILBOXkSOdfKQNEu4s")
-                .uri(new URI("https://api.twitter.com/1.1/search/tweets.json?q=birds&result_type=recent"))
+                .uri(new URI("https://api.twitter.com/1.1/search/tweets.json?result_type=recent&q=" + obj.get("hashtag") + "-filter:retweets"))
                 .GET()
                 .build();
 
@@ -130,8 +132,12 @@ public class Twitter {
         return jsonNode.toString();
     }
 
+    private Integer convertDays(String days, String hours, String minutes){
+        return Integer.parseInt(days)*60*24 + Integer.parseInt(hours)*60 + Integer.parseInt(minutes);
+    }
+
     @PostMapping("/postTweet")
-    public String postTweet(HttpServletRequest request, HttpServletResponse response, @RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
+    public String postTweet(@RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
 
         String client_id = this.client_id;
         String secret_client = this.client_secret;
@@ -150,22 +156,46 @@ public class Twitter {
         // Pass credentials to library client
         apiInstance.setTwitterCredentials(credentials);
 
-
         // Set the params values
         CreateTweetRequest createTweetRequest = new CreateTweetRequest();
         CreateTweetRequestPoll createTweetRequestPoll = new CreateTweetRequestPoll();
 
         // The text of the Tweet
-        createTweetRequest.text("Are you excited for the weekend?");
+        createTweetRequest.text(obj.get("text").toString());
 
-        // Options for a Tweet with a poll
-        List<String> pollOptions = Arrays.asList("Yes", "Maybe", "No");
-        createTweetRequestPoll.options(pollOptions);
+        if(obj.get("choice1") != ""){
+            List<String> pollOptions;
+            if(obj.get("choice4") != ""){
+                pollOptions = Arrays.asList(obj.get("choice1").toString(), obj.get("choice2").toString(), obj.get("choice3").toString(), obj.get("choice4").toString());
+            } else if(obj.get("choice3") != ""){
+                pollOptions = Arrays.asList(obj.get("choice1").toString(), obj.get("choice2").toString(), obj.get("choice3").toString());
+            }else {
+                pollOptions = Arrays.asList(obj.get("choice1").toString(), obj.get("choice2").toString());
+            }
 
-        // Duration of the poll in minutes
-        createTweetRequestPoll.durationMinutes(120);
+            createTweetRequestPoll.options(pollOptions);
 
-        createTweetRequest.poll(createTweetRequestPoll);
+
+            // Duration of the poll in minutes
+            createTweetRequestPoll.durationMinutes(
+                    convertDays(obj.get("days").toString(),
+                            obj.get("hours").toString(),
+                            obj.get("minutes").toString() )
+            );
+
+            createTweetRequest.poll(createTweetRequestPoll);
+        }
+
+        switch(obj.get("reply_settings").toString()){
+            case "following":
+                System.out.println(obj.get("reply_settings").toString());
+                createTweetRequest.replySettings(CreateTweetRequest.ReplySettingsEnum.FOLLOWING);
+                break;
+            case "mentionedUsers":
+                System.out.println(obj.get("reply_settings").toString());
+                createTweetRequest.replySettings(CreateTweetRequest.ReplySettingsEnum.MENTIONEDUSERS);
+                break;
+        }
 
         try {
             TweetCreateResponse result = apiInstance.tweets().createTweet(createTweetRequest);
@@ -200,8 +230,7 @@ public class Twitter {
         apiInstance.setTwitterCredentials(credentials);
 
         // Set<String> | A comma separated list of User fields to display.
-        Set<String> userFields = new HashSet<>(Arrays.asList("profile_image_url"));
-
+        Set<String> userFields = new HashSet<>(Arrays.asList("profile_image_url", "id"));
         try {
             SingleUserLookupResponse result = apiInstance.users().findMyUser(null, null, userFields);
             return result.getData().toJson();
@@ -216,4 +245,22 @@ public class Twitter {
 
     }
 
+    @PostMapping("/getUserInfo")
+    public String getUserInfo(@RequestBody LinkedHashMap obj) throws URISyntaxException, IOException, InterruptedException{
+
+        HttpRequest request = HttpRequest
+                .newBuilder()
+                .header("Authorization", "Bearer "+"AAAAAAAAAAAAAAAAAAAAAEEfiwEAAAAA2xa2Jpd0sP04JWHUriUVClevIAM%3DwNoYySWDD1XEgRlRl6i3Dbm0I5qmvkwSdILBOXkSOdfKQNEu4s")
+                .uri(new URI("https://api.twitter.com/1.1/users/show.json?screen_name=" + obj.get("screen_name")))
+                .GET()
+                .build();
+
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readValue(response.body(), JsonNode.class);
+
+        return jsonNode.toString();
+    }
 }

@@ -14,7 +14,6 @@ export function SpotifyWaitingList( waitingList: Array<Track> , playNow : Functi
     const [userInfo, setUserInfo] = useState(localStorage.getItem("user-info") || undefined)
 
     useEffect(()=>{
-        console.log(waitingList)
         setMyWaitingList(waitingList || undefined)
 
     }, [waitingList])
