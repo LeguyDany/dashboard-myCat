@@ -21,17 +21,6 @@ import {PostTweet, GetTweetByHashtag, GetTwitterUser} from './widgets/twitter';
 // import {} from './widgets/weather';
 
 // ============================================= Components =============================================
-// ------------------------------------- Test -------------------------------------
-const Clock = () => {
-    return(
-        <input type="button" value="Bonjour"/>
-    )
-}
-// const SpotifyWebApi = require('spotify-web-api-node');
-
-
-// ============================================= Components =============================================
-
 // ------------------------------------- Widget building -------------------------------------
 interface widgetType {
     widgetType:string,
@@ -111,16 +100,9 @@ export function ComposeDashboard(){
             <section className="content">
                 <Header page={page}/>
                 <article>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget2" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
-                    <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify autoPlay={autoPlay} playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
                     <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack, autoPlayTrack)}/>
                     <WidgetTest widgetType="widget1" Widget={SpotifyWaitingList(waitingList, playNow)}/>
-                    {/*<WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>*/}
-                    {/*<WidgetTest widgetType="widget2" Widget={<PostTweet/>}/>*/}
                     <WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>
                     <WidgetTest widgetType="widget1" Widget={<PostTweet/>}/>
                     <WidgetTest widgetType="widget1" Widget={<GetTweetByHashtag/>}/>

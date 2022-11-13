@@ -9,6 +9,8 @@ import './twitter.css';
 import twitterIcon from '../assets/icons/twitterIcon.svg';
 import imgIcon from '../assets/icons/image-line.svg';
 import pollIcon from '../assets/icons/chat-poll-line.svg';
+import verifiedIcon from '../assets/icons/Twitter_Verified_Badge.svg'
+import hashtagIcon from '../assets/icons/hashtagIcon.svg'
 
 
 // ============================================= Components =============================================
@@ -38,6 +40,17 @@ interface hashtagTweet{
     mentionedUsers: string[] | null | undefined;
     hashtags: string[] | null | undefined;
 }
+interface userInfo{
+    screen_name:string|undefined;
+    created_at:string|undefined;
+    followers_count:number|undefined;
+    friends_count:number|undefined;
+    profile_banner_url:string|undefined;
+    verified:boolean|undefined;
+    name:string|undefined;
+    profile_image_url:string|undefined;
+    description: string|undefined;
+}
 
 // ------------------------------------- Children -------------------------------------
 // -------------- General --------------
@@ -62,7 +75,7 @@ function SetupTweetsHashtag({arrayTweets}:any){
 
         if(toCheck.extended_entities !== undefined){
             for(const item in toCheck.extended_entities.media){
-                imageArray.push(React.createElement("img", {key:toCheck.extended_entities.media[item], src:toCheck.extended_entities.media[item].media_url, alt:"Image file", className:"imgTweetHashtag"}));
+                imageArray.push(React.createElement("img", {key:toCheck.extended_entities.media[item] + "image", src:toCheck.extended_entities.media[item].media_url, alt:"Image file", className:"imgTweetHashtag"}));
             }
         }
         return imageArray;
@@ -70,22 +83,22 @@ function SetupTweetsHashtag({arrayTweets}:any){
 
 
     return(
-     <>
-         {arrayTweets.map((tweet:any, index:KeyType) => (
-             <>
-                 <HashtagTweet userName={tweet.user.name}
-                               profilePic={tweet.user.profile_image_url}
-                               screenName={tweet.user.screen_name}
-                               createdAt={tweet.created_at}
-                               text={tweet.text}
-                               mentionedUsers={tweet.entities.user_mentions}
-                               hashtags={tweet.entities.hashtags}
-                               key={index}
-                 />
-                 {checkImage(tweet)}
-             </>
-         ))}
-     </>
+        <>
+            {arrayTweets.map((tweet:any, index:KeyType) => (
+                <>
+                    <HashtagTweet userName={tweet.user.name}
+                                  profilePic={tweet.user.profile_image_url}
+                                  screenName={tweet.user.screen_name}
+                                  createdAt={tweet.created_at}
+                                  text={tweet.text}
+                                  mentionedUsers={tweet.entities.user_mentions}
+                                  hashtags={tweet.entities.hashtags}
+                                  key={index}
+                    />
+                    {checkImage(tweet)}
+                </>
+            ))}
+        </>
     )
 }
 function HashtagTweet({userName, profilePic, screenName, createdAt, text, mentionedUsers, hashtags}:hashtagTweet){
@@ -108,6 +121,38 @@ function HashtagTweet({userName, profilePic, screenName, createdAt, text, mentio
     )
 }
 
+// -------------- GetUserInfo --------------
+function DisplayUser({screen_name, created_at, followers_count, friends_count, profile_banner_url, verified, name, profile_image_url, description}:userInfo){
+    return(
+        <article className={`${screen_name !== undefined ? "" : "displayNone"}`}>
+            <hr className="lightSeparator"/>
+            <img src={profile_banner_url} alt="banner picture" className={`userBanner ${profile_banner_url !== undefined?"":"displayNone"}`}/>
+            <div className="profileHead">
+                <img src={profile_image_url} alt="profile picture" className={`profilePic ${profile_image_url !== undefined?"":"displayNone"}`}/>
+                <p>
+                    <div>
+                        <span className="tweetsHashtagUserName">{name}</span>
+                        <img src={verifiedIcon} alt="verified icon" className={`verifiedIcon ${verified !== undefined || verified !== false?"displayNone":""}`}/>
+                    </div>
+                    <div>
+                        <span className="tweetsHashtagScreenName">@{screen_name}</span> <span className="userCreationDate">Created at: {created_at?.slice(4,10)} {created_at?.slice(26)}</span>
+                    </div>
+
+                </p>
+            </div>
+
+            <div className="userMetrics">
+                <span>{followers_count}</span> followers <br/>
+                <span>{friends_count}</span> following
+            </div>
+
+            <p>
+                {description}
+            </p>
+
+        </article>
+    )
+}
 
 // ------------------------------------- Main component -------------------------------------
 export function PostTweet(){
@@ -125,9 +170,11 @@ export function PostTweet(){
     const [days, setDays] = useState<string>("0");
     const [hours, setHours] = useState<string>("0");
     const [minutes, setMinutes] = useState<string>("0");
+    const [successPost, setSuccessPost] = useState<any>();
 
     const clearPoll = () => {
         setPollSelect("");
+        setSuccessPost("");
         setChoice1("");
         setChoice2("");
         setChoice3("");
@@ -190,8 +237,7 @@ export function PostTweet(){
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(res.data);
-
+            setSuccessPost(React.createElement("p", {className:"postSuccess"}, "Tweet posted!"))
         }catch(error){
             console.log(error);
         }
@@ -262,6 +308,8 @@ export function PostTweet(){
                 <img src={pollIcon} className={pollSelect} onClick={handlePollOption}/>
             </div>
 
+            {successPost}
+
             <input type="submit" value="Post a poll tweet" onClick={postForm}/>
         </section>
     )
@@ -280,13 +328,15 @@ export function GetTweetByHashtag(){
     }
 
     useEffect(() => {
-        const timer = setInterval( async () => {
-            const res = await axios.post("http://localhost:8080/api/twitter/getByHashtag", {hashtag});
-            setTweets(res.data.statuses);
-        }, 15*1000);
-        return () => {
-            clearInterval(timer);
-        };
+        if(hashtag !== ""){
+            const timer = setInterval( async () => {
+                const res = await axios.post("http://localhost:8080/api/twitter/getByHashtag", {hashtag});
+                setTweets(res.data.statuses);
+            }, 15*1000);
+            return () => {
+                clearInterval(timer);
+            };
+        }
     }, [submit])
 
     return(
@@ -304,23 +354,42 @@ export function GetTweetByHashtag(){
 }
 
 export function GetTwitterUser(){
-    const [screenName, setSreenName] = useState<string>();
-    const [] = useState();
-    const [] = useState();
+    const [screenName, setScreenName] = useState<string>();
+    const [userInfo, setUserInfo] = useState<userInfo>();
 
     const handleSubmit = async (e:any) => {
         e.preventDefault();
         const res = await axios.post("http://localhost:8080/api/twitter/getUserInfo", {screen_name : screenName});
-        console.log(res.data);
+        setUserInfo({
+            screen_name:res.data.screen_name,
+            created_at:res.data.created_at,
+            followers_count:res.data.followers_count,
+            friends_count:res.data.friends_count,
+            profile_banner_url:res.data.profile_banner_url,
+            verified:res.data.verified,
+            name:res.data.name,
+            profile_image_url:res.data.profile_image_url,
+            description: res.data.description,
+        })
     }
 
     return(
         <section className="getTwitterUser">
-            <CompHead title="Get User info"/>
+            <CompHead title="Get user info"/>
             <form onSubmit={e => handleSubmit(e)}>
-                <input type="text" onChange={e => setSreenName(e.target.value)} placeholder="Insert user screen name"/>
+                <input type="text" onChange={e => setScreenName(e.target.value)} placeholder="Insert user screen name"/>
                 <input type="submit" value="Search"/>
             </form>
+            <DisplayUser screen_name={userInfo?.screen_name}
+                         created_at={userInfo?.created_at}
+                         followers_count={userInfo?.followers_count}
+                         friends_count={userInfo?.friends_count}
+                         profile_banner_url={userInfo?.profile_banner_url}
+                         verified={userInfo?.verified}
+                         name={userInfo?.name}
+                         profile_image_url={userInfo?.profile_image_url}
+                         description={userInfo?.description}
+            />
         </section>
     )
 }

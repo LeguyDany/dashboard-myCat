@@ -1,7 +1,23 @@
 @import '../index.css';
 /* ====================================== General ====================================== */
-
-
+.getTweetByHashtag, .getTwitterUser{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.getTweetByHashtag form > input[type=text], .getTwitterUser form > input[type=text]{
+    width: calc(66% - 40px);
+}
+.getTweetByHashtag form > input[type=submit], .getTwitterUser form > input[type=submit]{
+    width: 34%;
+}
+.getTweetByHashtag form, .getTwitterUser form{
+    display: flex;
+    flex-direciton: row;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
 /* ====================================== Twitter post ====================================== */
 /* --------------------------------- General --------------------------------- */
 .twitterPost {
@@ -18,6 +34,10 @@
     margin: 10px 0px 0px 0px;
     color: var(--purple1);
     font-weight: 600;
+}
+.postSuccess{
+    color: var(--purple3);
+    font-weight: 700;
 }
 
 /* --------------------------------- profile pic + select reply scope --------------------------------- */
@@ -82,7 +102,7 @@
     filter: invert(42%) sepia(93%) saturate(3396%) hue-rotate(225deg) brightness(101%) contrast(101%);
 }
 @media (max-width: 1200px){
-    .twitterPost > div > img {
+    .twitterPost > div:nth-child(2) > img {
         display: none;
     }
 }
@@ -139,27 +159,18 @@
 
 
 /* ====================================== Twitter Get Tweets by Hashtag ====================================== */
-.getTweetByHashtag{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.getTweetByHashtag form > input[type=text] {
+    width: 50%;
+    background-image: url("../assets/icons/hashtagIcon.svg");
+    background-repeat: no-repeat;
+    background-position: 15px 50%;
+    background-size: 20px 20px;
+    padding-left: 50px;
+    width: calc(66% - 90px);
 }
 .imgTweetHashtag{
     max-height: 300px;
     max-width: 50%;
-}
-.getTweetByHashtag form{
-    display: flex;
-    flex-direciton: row;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-.getTweetByHashtag form > input[type=text]{
-    width: calc(66% - 40px);
-}
-.getTweetByHashtag form > input[type=submit]{
-    width: 34%;
 }
 .singleTweetByHashtag > div{
     display: flex;
@@ -182,4 +193,39 @@
 }
 .tweetsHashtagScreenName{
     color: var(--purple3);
+}
+
+/* ====================================== Twitter Get user ====================================== */
+.getTwitterUser article > p{
+    border-left: solid 2px var(--purple3);
+    padding-left: 20px;
+}
+
+.profileHead{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+.profileHead .profilePic {
+    object-fit: cover;
+    height: 50px;
+    width: 50px;
+}
+
+.verifiedIcon{
+    width: 20px;
+}
+.userBanner{
+    max-width: 100%;
+}
+.userCreationDate{
+    color:var(--gray0);
+}
+.userMetrics{
+    color:var(--gray0);
+}
+.userMetrics > span {
+    color: var(--purple3);
+    font-weight: 600;
 }
