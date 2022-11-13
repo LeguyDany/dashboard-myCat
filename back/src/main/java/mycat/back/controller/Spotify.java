@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -140,6 +141,36 @@ import io.jsonwebtoken.SignatureAlgorithm;
         user.setDefaultSpotifyPlay(track.get("track").toString());
         userRepository.save(user);
         return "autoPlay Saved";
+    }
+    @PostMapping("/setfavoritlist")
+    public String setFavoritList(@RequestBody ArrayList<Object> track, HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = null;
+        String jwtToken = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwtToken);
+        }
+        mycat.back.model.UserModel user = userRepository.findByUsername(username);
+        user.setFavoriteListSpotify(track);
+        userRepository.save(user);
+        return "favorite list saved";
+    }
+
+    @GetMapping("/getfavoritlist")
+    public ArrayList<Object> getFavoritList(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = null;
+        String jwtToken = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwtToken);
+        }
+        mycat.back.model.UserModel user = userRepository.findByUsername(username);
+        System.out.println(user.getFavoriteListSpotify());
+        return user.getFavoriteListSpotify();
     }
 
 

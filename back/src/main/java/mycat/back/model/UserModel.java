@@ -3,6 +3,8 @@ package mycat.back.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+
 
 @Document(collection = "user")
 public class UserModel {
@@ -14,7 +16,7 @@ public class UserModel {
   private String[] widgets;
   private String lastSearchSpotify;
   private String defaultSpotifyPlay;
-  private Object[] favoriteListSpotify;
+  private ArrayList<Object> favoriteListSpotify = new ArrayList<>();
   private String weatherCity;
 
   public UserModel() {
@@ -64,11 +66,11 @@ public class UserModel {
     this.defaultSpotifyPlay = defaultSpotifyPlay;
   }
 
-  public Object[] getFavoriteListSpotify() {
+  public ArrayList<Object> getFavoriteListSpotify() {
     return favoriteListSpotify;
   }
 
-  public void setFavoriteListSpotify(Object[] favoriteListSpotify) {
+  public void setFavoriteListSpotify(ArrayList<Object> favoriteListSpotify) {
     this.favoriteListSpotify = favoriteListSpotify;
   }
 

@@ -67,10 +67,23 @@ export function ComposeDashboard(){
     const playNow = (track : Track) => {
         setPlayingTrack(track.uri)
     }
-    const addToWaitingList =(track : Track) => {
+
+    const addToWaitingList = async (track : Track) => {
+
         if(waitingList.includes(track)) return
-        setWaitingList([...waitingList, track])
+        await setWaitingList([...waitingList, track])
+        axios.post("http://localhost:8080/api/spotify/setfavoritlist", [...waitingList, track],{
+            headers: {
+                authorization: `Bearer ${userInfo}`
+            }
+        })
+        // const res2 = await axios.get("http://localhost:8080/api/spotify/getfavoritlist",{
+        //     headers:{
+        //         authorization: `Bearer ${userInfo}`
+        //     }})
+        // await setWaitingList([...res2.data])
     }
+
     const autoPlay = (track : Track) => {
         setAutoPlayTrack(track.uri)
         axios.post("http://localhost:8080/api/spotify/setautoplay",{track: track.uri},{
@@ -90,7 +103,14 @@ export function ComposeDashboard(){
 
     useEffect(()=>{
         getAutoPlay();
-
+        (async() =>{
+            const res = await axios.get("http://localhost:8080/api/spotify/getfavoritlist",{
+                headers:{
+                    authorization: `Bearer ${userInfo}`
+                }})
+            await setWaitingList(res.data)
+            console.log(res.data)
+        })()
     }, [])
 
     return(
@@ -106,7 +126,7 @@ export function ComposeDashboard(){
                     <WidgetTest widgetType="widget1" Widget={<Clock/>}/>
                     <WidgetTest widgetType="widget1" Widget={<SearchBarSpotify autoPlay={autoPlay} playNow={playNow} addToWaitingList={addToWaitingList}/>}/>
                     <WidgetTest widgetType="widget1" Widget={SpotifyPlayerWidget(playingTrack, autoPlayTrack)}/>
-                    <WidgetTest widgetType="widget1" Widget={<SpotifyWaitingList waitingList={waitingList}/>}/>
+                    <WidgetTest widgetType="widget1" Widget={SpotifyWaitingList(waitingList, playNow)}/>
                     {/*<WidgetTest widgetType="widget2" Widget={<WeatherWidget/>}/>*/}
                     {/*<WidgetTest widgetType="widget2" Widget={<PostTweet/>}/>*/}
                 </article>
