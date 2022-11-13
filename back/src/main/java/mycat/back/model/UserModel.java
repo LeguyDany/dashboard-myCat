@@ -15,7 +15,7 @@ public class UserModel {
   private String password;
   private String lastSearchSpotify;
   private String defaultSpotifyPlay;
-  private Object[] favoriteListSpotify;
+  private ArrayList<Object> favoriteListSpotify = new ArrayList<>();
   private String weatherCity;
 
   private ArrayList<WidgetModel> widgets = new ArrayList<>();
@@ -68,11 +68,11 @@ public class UserModel {
     this.defaultSpotifyPlay = defaultSpotifyPlay;
   }
 
-  public Object[] getFavoriteListSpotify() {
+  public ArrayList<Object> getFavoriteListSpotify() {
     return favoriteListSpotify;
   }
 
-  public void setFavoriteListSpotify(Object[] favoriteListSpotify) {
+  public void setFavoriteListSpotify(ArrayList<Object> favoriteListSpotify) {
     this.favoriteListSpotify = favoriteListSpotify;
   }
 

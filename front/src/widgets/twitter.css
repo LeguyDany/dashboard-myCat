@@ -9,6 +9,16 @@
     flex-direction: column;
     gap: 10px;
 }
+.twitterPost h2 {
+    margin: 0px 0px 10px 0px;
+    color: var(--purple1);
+    font-weight: 600;
+}
+.twitterPost h3 {
+    margin: 10px 0px 0px 0px;
+    color: var(--purple1);
+    font-weight: 600;
+}
 
 /* --------------------------------- profile pic + select reply scope --------------------------------- */
 .twitterPost > div:nth-child(2){
@@ -40,7 +50,7 @@
 /* --------------------------------- Text --------------------------------- */
 .twitterPost textarea{
     resize: none;
-    height: 200px;
+    height: 100px;
     padding: 10px;
     font-size: 1.2em;
     font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -71,6 +81,11 @@
 .twitterPostOptionSelected{
     filter: invert(42%) sepia(93%) saturate(3396%) hue-rotate(225deg) brightness(101%) contrast(101%);
 }
+@media (max-width: 1200px){
+    .twitterPost > div > img {
+        display: none;
+    }
+}
 
 /* --------------------------------- Post options : upload media --------------------------------- */
 .tweetImgPreview{
@@ -95,9 +110,76 @@
 }
 .tweetPostPoll > form > div {
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.tweetPostPoll > form > div > div{
+    display: flex;
     flex-direction: row;
     gap: 40px;
 }
 .tweetPostPoll > form > div input{
     padding: 0px 10px;
+}
+.tweetPostPoll > form > div input:focus{
+    outline: none;
+    border-bottom: solid 2px var(--purple3);
+}
+.tweetPostPoll > form > div > div > label p {
+    margin: 0px;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+.tweetPostPoll > form > div > label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+/* ====================================== Twitter Get Tweets by Hashtag ====================================== */
+.getTweetByHashtag{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.imgTweetHashtag{
+    max-height: 300px;
+    max-width: 50%;
+}
+.getTweetByHashtag form{
+    display: flex;
+    flex-direciton: row;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.getTweetByHashtag form > input[type=text]{
+    width: calc(66% - 40px);
+}
+.getTweetByHashtag form > input[type=submit]{
+    width: 34%;
+}
+.singleTweetByHashtag > div{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0px;
+}
+.singleTweetByHashtag > div > img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+}
+.singleTweetByHashtag p{
+    margin: 0px;
+}
+.tweetsHashtagUserName {
+    font-weight: 700;
+}
+.tweetsHashtagScreenName{
+    color: var(--purple3);
 }

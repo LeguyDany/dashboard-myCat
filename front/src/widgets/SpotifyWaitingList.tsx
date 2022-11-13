@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import axios from "axios";
+import {userInfo} from "os";
 
 interface Track {
     albumUrl: string,
@@ -7,10 +9,14 @@ interface Track {
     uri : string
 }
 
-export function SpotifyWaitingList({waitingList}: { waitingList: Track[] }){
+export function SpotifyWaitingList( waitingList: Array<Track> , playNow : Function){
     const [myWaitingList, setMyWaitingList] = useState<Array<Track>>([])
+    const [userInfo, setUserInfo] = useState(localStorage.getItem("user-info") || undefined)
 
-    useEffect(()=>{ setMyWaitingList(waitingList)}, [waitingList])
+    useEffect(()=>{
+        setMyWaitingList(waitingList || undefined)
+
+    }, [waitingList])
 
     return(
         <div>
@@ -20,6 +26,7 @@ export function SpotifyWaitingList({waitingList}: { waitingList: Track[] }){
                     <img src={track.albumUrl}/>
                     <div> {track.title}</div>
                     <div> {track.artist}</div>
+                    <button onClick={() => playNow(track)}> Play now</button>
                 </div>
             ))}
         </div>

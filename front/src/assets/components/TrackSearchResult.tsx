@@ -1,7 +1,7 @@
 import React from "react";
 
 // @ts-ignore
-export default function TrackSearchResult( { track, playNow, addToWaitingList }){
+export default function TrackSearchResult( { track, playNow, addToWaitingList, autoPlay }){
 
 
     return(
@@ -11,6 +11,7 @@ export default function TrackSearchResult( { track, playNow, addToWaitingList })
             <div> {track.artist}</div>
             <button onClick={() => addToWaitingList(track)}>Add to favorite list</button>
             <button onClick={() => playNow(track)}> Play now</button>
+            <button onClick={() => autoPlay(track)}>AutoPlay</button>
         </div>
     )
 
